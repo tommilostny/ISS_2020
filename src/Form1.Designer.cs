@@ -39,14 +39,17 @@ namespace src
             this.plotView2 = new OxyPlot.WindowsForms.PlotView();
             this.plotViewMaskOnTone = new OxyPlot.WindowsForms.PlotView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.minTrackBar = new System.Windows.Forms.TrackBar();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.maxTrackBar = new System.Windows.Forms.TrackBar();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -97,7 +100,7 @@ namespace src
             this.plotViewMaskOffTone.Location = new System.Drawing.Point(3, 3);
             this.plotViewMaskOffTone.Name = "plotViewMaskOffTone";
             this.plotViewMaskOffTone.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewMaskOffTone.Size = new System.Drawing.Size(846, 303);
+            this.plotViewMaskOffTone.Size = new System.Drawing.Size(823, 303);
             this.plotViewMaskOffTone.TabIndex = 5;
             this.plotViewMaskOffTone.Text = "plotViewMaskOffTone";
             this.plotViewMaskOffTone.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -124,7 +127,7 @@ namespace src
             this.plotViewMaskOnTone.Location = new System.Drawing.Point(3, 3);
             this.plotViewMaskOnTone.Name = "plotViewMaskOnTone";
             this.plotViewMaskOnTone.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewMaskOnTone.Size = new System.Drawing.Size(846, 309);
+            this.plotViewMaskOnTone.Size = new System.Drawing.Size(823, 309);
             this.plotViewMaskOnTone.TabIndex = 6;
             this.plotViewMaskOnTone.Text = "plotView1";
             this.plotViewMaskOnTone.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -136,7 +139,7 @@ namespace src
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(218, 12);
+            this.splitContainer1.Location = new System.Drawing.Point(241, 12);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -147,47 +150,79 @@ namespace src
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.plotViewMaskOnTone);
-            this.splitContainer1.Size = new System.Drawing.Size(852, 629);
+            this.splitContainer1.Size = new System.Drawing.Size(829, 629);
             this.splitContainer1.SplitterDistance = 309;
             this.splitContainer1.TabIndex = 8;
             // 
-            // trackBar1
+            // minTrackBar
             // 
-            this.trackBar1.Location = new System.Drawing.Point(12, 213);
-            this.trackBar1.Minimum = 1;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(200, 56);
-            this.trackBar1.TabIndex = 7;
-            this.trackBar1.Value = 10;
-            this.trackBar1.ValueChanged += new System.EventHandler(this.TrackBar1_ValueChanged);
+            this.minTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.minTrackBar.LargeChange = 50;
+            this.minTrackBar.Location = new System.Drawing.Point(41, 241);
+            this.minTrackBar.Maximum = 99;
+            this.minTrackBar.Name = "minTrackBar";
+            this.minTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.minTrackBar.Size = new System.Drawing.Size(56, 378);
+            this.minTrackBar.SmallChange = 5;
+            this.minTrackBar.TabIndex = 7;
+            this.minTrackBar.ValueChanged += new System.EventHandler(this.MinTrackBar_ValueChanged);
             // 
-            // label2
+            // button2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 190);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 20);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Interval length: 1s";
+            this.button2.Location = new System.Drawing.Point(12, 161);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(85, 33);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "+";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.ZoomPlusButton_Click);
             // 
-            // button1
+            // button3
             // 
-            this.button1.Location = new System.Drawing.Point(12, 259);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(85, 33);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Replot";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.ReplotButton_Click);
+            this.button3.Location = new System.Drawing.Point(106, 161);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(85, 33);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "-";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.ZoomMinusButton_Click);
+            // 
+            // maxTrackBar
+            // 
+            this.maxTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.maxTrackBar.LargeChange = 50;
+            this.maxTrackBar.Location = new System.Drawing.Point(106, 241);
+            this.maxTrackBar.Maximum = 100;
+            this.maxTrackBar.Minimum = 1;
+            this.maxTrackBar.Name = "maxTrackBar";
+            this.maxTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.maxTrackBar.Size = new System.Drawing.Size(56, 378);
+            this.maxTrackBar.SmallChange = 5;
+            this.maxTrackBar.TabIndex = 10;
+            this.maxTrackBar.Value = 100;
+            this.maxTrackBar.ValueChanged += new System.EventHandler(this.MaxTrackBar_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(12, 218);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(179, 25);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "From 0s to 1s.";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1082, 653);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.trackBar1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.maxTrackBar);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.minTrackBar);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.plotView2);
             this.Controls.Add(this.buttonPlay);
@@ -201,7 +236,8 @@ namespace src
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,9 +252,11 @@ namespace src
         private OxyPlot.WindowsForms.PlotView plotView2;
         private OxyPlot.WindowsForms.PlotView plotViewMaskOnTone;
         private SplitContainer splitContainer1;
-        private TrackBar trackBar1;
-        private Label label2;
-        private Button button1;
+        private TrackBar minTrackBar;
+        private Button button2;
+        private Button button3;
+        private TrackBar maxTrackBar;
+        private Label label3;
     }
 }
 

@@ -4,6 +4,8 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
 using System.Windows.Forms;
+using MathNet.Numerics;
+using MathNet.Numerics.IntegralTransforms;
 
 namespace src
 {
@@ -18,6 +20,7 @@ namespace src
             public string PlotTitle { get; init; }
             public string FileName { get; init; }
             public string FullFilePath => $@"..\..\..\..\audio\{FileName}";
+            public Axis XAxis { get; set; }
         }
 
         private readonly PlotData maskOffTone;  //Mask on data for plotting
@@ -76,7 +79,7 @@ namespace src
             };
 
             //XY axes setup
-            var x_axis = new LinearAxis
+            plotData.XAxis = new LinearAxis
             {
                 Maximum = seconds * Fs,
                 Minimum = 0,
@@ -86,9 +89,10 @@ namespace src
             {
                 Maximum = 1100,
                 Minimum = -1100,
-                Position = AxisPosition.Left
+                Position = AxisPosition.Left,
+                IsZoomEnabled = false
             };
-            pm.Axes.Add(x_axis);
+            pm.Axes.Add(plotData.XAxis);
             pm.Axes.Add(y_axis);
 
             //Setup stem
@@ -131,16 +135,53 @@ namespace src
             audioFile = null;
         }
 
-        private void TrackBar1_ValueChanged(object sender, EventArgs e)
+        private void ScrollZoomUpdate()
         {
-            label2.Text = $"Interval length: {Convert.ToDouble(trackBar1.Value) / 10}s";
+            int x1 = minTrackBar.Value * 160;
+            int x2 = maxTrackBar.Value * 160;
+            maskOffTone.XAxis.Zoom(x1, x2);
+            maskOnTone.XAxis.Zoom(x1, x2);
+            label3.Text = $"From {(double)minTrackBar.Value / 100}s to {(double)maxTrackBar.Value / 100}s.";
+            splitContainer1.Refresh();
         }
 
-        private void ReplotButton_Click(object sender, EventArgs e)
+        private void MaxTrackBar_ValueChanged(object sender, EventArgs e)
         {
-            var seconds = Convert.ToDouble(trackBar1.Value) / 10;
-            plotViewMaskOffTone.Model = PlotWavFile(maskOffTone, seconds);
-            plotViewMaskOnTone.Model = PlotWavFile(maskOnTone, seconds);
+            if (maxTrackBar.Value <= minTrackBar.Value)
+            {
+                maxTrackBar.Value++;
+            }
+            ScrollZoomUpdate();
+        }
+
+        private void MinTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (minTrackBar.Value >= maxTrackBar.Value)
+            {
+                minTrackBar.Value--;
+            }
+            ScrollZoomUpdate();
+        }
+
+        private void ZoomPlusButton_Click(object sender, EventArgs e)
+        {
+            if (maxTrackBar.Value - minTrackBar.Value > 1)
+            {
+                if (minTrackBar.Value < 99)
+                    minTrackBar.Value++;
+
+                if (maxTrackBar.Value > 1)
+                    maxTrackBar.Value--;
+            }
+        }
+
+        private void ZoomMinusButton_Click(object sender, EventArgs e)
+        {
+            if (minTrackBar.Value > 0)
+                minTrackBar.Value--;
+
+            if (maxTrackBar.Value < 100)
+                maxTrackBar.Value++;
         }
     }
 }
