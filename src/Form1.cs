@@ -20,8 +20,9 @@ namespace src
             public string FullFilePath => $@"..\..\..\..\audio\{FileName}";
         }
 
-        private readonly PlotData maskOffTone;
-        private readonly PlotData maskOnTone;
+        private readonly PlotData maskOffTone;  //Mask on data for plotting
+        private readonly PlotData maskOnTone;   //Mask off data for plotting
+        private const int Fs = 16000;           //16000 = 1s (Fs = 16kHz)
 
         public Form1()
         {
@@ -43,20 +44,21 @@ namespace src
             plotViewMaskOnTone.Model = PlotWavFile(maskOnTone);
         }
 
-        //16000 = 1s (Fs = 16kHz)
-        private static DataPoint[] LoadAudioSamples(string filePath, int samplesCount = 16000)
+        private static DataPoint[] LoadAudioSamples(string filePath, int samplesCount = Fs)
         {
             var datapoints = new DataPoint[samplesCount];
             var samples = new short[samplesCount];
 
+            //Read WAV file into array of 16-bit integers
             using (var waveFileReader = new WaveFileReader(filePath))
             {
-                byte[] buffer = new byte[samplesCount * 2];
+                var buffer = new byte[samplesCount * 2];
                 waveFileReader.Read(buffer, 0, buffer.Length);
                 Buffer.BlockCopy(buffer, 0, samples, 0, samplesCount * 2);
             }
 
-            for (var i = 0; i < samples.Length; i++)
+            //Convert read array to datapoints for OxyPlot
+            for (int i = 0; i < samplesCount; i++)
             {
                 datapoints[i] = new DataPoint(i, samples[i]);
             }
@@ -65,6 +67,7 @@ namespace src
 
         private static PlotModel PlotWavFile(PlotData plotData, double seconds = 1.0)
         {
+            //OxyPlot model setup
             var pm = new PlotModel
             {
                 Title = plotData.PlotTitle,
@@ -72,9 +75,10 @@ namespace src
                 Background = OxyColors.White,
             };
 
+            //XY axes setup
             var x_axis = new LinearAxis
             {
-                Maximum = seconds * 16000,
+                Maximum = seconds * Fs,
                 Minimum = 0,
                 Position = AxisPosition.Bottom
             };
@@ -87,12 +91,13 @@ namespace src
             pm.Axes.Add(x_axis);
             pm.Axes.Add(y_axis);
 
+            //Setup stem
             var stemSeries = new StemSeries
             {
                 MarkerStroke = OxyColors.Green,
                 MarkerType = MarkerType.Circle
             };
-            stemSeries.Points.AddRange(LoadAudioSamples(plotData.FullFilePath, (int)(seconds * 16000)));
+            stemSeries.Points.AddRange(LoadAudioSamples(plotData.FullFilePath, (int)(seconds * Fs)));
             pm.Series.Add(stemSeries);
 
             return pm;
