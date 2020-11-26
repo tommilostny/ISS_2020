@@ -12,9 +12,7 @@ namespace src
 {
     public partial class Form1 : Form
     {
-        private WaveOutEvent outputDevice;
-        private AudioFileReader audioFile;
-        private string SelectedFile => $@"..\..\..\..\audio\{comboBox1.Items[comboBox1.SelectedIndex]}.wav";
+        private readonly Playback filePlayer;
 
         private record PlotData
         {
@@ -32,6 +30,11 @@ namespace src
         {
             InitializeComponent();
             comboBox1.SelectedIndex = 0;
+            filePlayer = new Playback(comboBox1);
+
+            buttonPlay.Click += filePlayer.OnButtonPlayClick;
+            buttonStop.Click += filePlayer.OnButtonStopClick;
+            comboBox1.SelectedIndexChanged += filePlayer.OnButtonStopClick;
 
             maskOffTone = new PlotData
             {
@@ -106,34 +109,6 @@ namespace src
             pm.Series.Add(stemSeries);
 
             return pm;
-        }
-
-        private void OnButtonStopClick(object sender, EventArgs e)
-        {
-            outputDevice?.Stop();
-        }
-
-        private void OnButtonPlayClick(object sender, EventArgs e)
-        {
-            if (outputDevice == null)
-            {
-                outputDevice = new WaveOutEvent();
-                outputDevice.PlaybackStopped += OnPlaybackStopped;
-            }
-            if (audioFile == null)
-            {
-                audioFile = new AudioFileReader(SelectedFile);
-                outputDevice.Init(audioFile);
-            }
-            outputDevice.Play();
-        }
-
-        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            outputDevice.Dispose();
-            outputDevice = null;
-            audioFile.Dispose();
-            audioFile = null;
         }
 
         private static async Task ZoomPlotAsync(PlotData plot, int x1, int x2)

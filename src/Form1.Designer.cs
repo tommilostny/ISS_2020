@@ -79,7 +79,6 @@ namespace src
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(179, 28);
             this.comboBox1.TabIndex = 1;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.OnButtonStopClick);
             // 
             // label1
             // 
@@ -97,7 +96,6 @@ namespace src
             this.buttonPlay.Size = new System.Drawing.Size(85, 33);
             this.buttonPlay.TabIndex = 3;
             this.buttonPlay.Text = "Play";
-            this.buttonPlay.Click += new System.EventHandler(this.OnButtonPlayClick);
             // 
             // buttonStop
             // 
@@ -106,7 +104,6 @@ namespace src
             this.buttonStop.Size = new System.Drawing.Size(85, 33);
             this.buttonStop.TabIndex = 4;
             this.buttonStop.Text = "Stop";
-            this.buttonStop.Click += new System.EventHandler(this.OnButtonStopClick);
             // 
             // plotViewMaskOffTone
             // 
