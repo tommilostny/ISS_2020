@@ -2,10 +2,10 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Windows.Forms;
 using MathNet.Numerics;
 using MathNet.Numerics.IntegralTransforms;
+using System;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 
 namespace src
@@ -136,10 +136,14 @@ namespace src
             audioFile = null;
         }
 
-        private static async Task<bool> ZoomPlotAsync(PlotData plot, int x1, int x2)
+        private static async Task ZoomPlotAsync(PlotData plot, int x1, int x2)
         {
             await Task.Run(() => plot.XAxis.Zoom(x1, x2));
-            return true;
+        }
+
+        private static async Task<string> ZoomLabelStringAsync(int minTBValue, int maxTBValue)
+        {
+            return await Task.Run(() => $"From {(double)minTBValue / 100}s to {(double)maxTBValue / 100}s.");
         }
 
         private async Task ScrollZoomUpdateAsync()
@@ -147,13 +151,14 @@ namespace src
             int x1 = minTrackBar.Value * 160;
             int x2 = maxTrackBar.Value * 160;
 
-            Task<bool> task1 = ZoomPlotAsync(maskOffTone, x1, x2);
-            Task<bool> task2 = ZoomPlotAsync(maskOnTone, x1, x2);
+            var zoomTask1 = ZoomPlotAsync(maskOffTone, x1, x2);
+            var zoomTask2 = ZoomPlotAsync(maskOnTone, x1, x2);
+            var labelTask = ZoomLabelStringAsync(minTrackBar.Value, maxTrackBar.Value);
 
-            label3.Text = $"From {(double)minTrackBar.Value / 100}s to {(double)maxTrackBar.Value / 100}s.";
+            await Task.WhenAll(zoomTask1, zoomTask2);
+            splitContainer1.Refresh();
 
-            if (await task1 && await task2)
-                splitContainer1.Refresh();
+            label3.Text = await labelTask;
         }
 
         private async void MaxTrackBar_ValueChanged(object sender, EventArgs e)
