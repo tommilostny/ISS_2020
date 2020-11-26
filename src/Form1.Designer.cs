@@ -36,7 +36,6 @@ namespace src
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.plotViewMaskOffTone = new OxyPlot.WindowsForms.PlotView();
-            this.plotView2 = new OxyPlot.WindowsForms.PlotView();
             this.plotViewMaskOnTone = new OxyPlot.WindowsForms.PlotView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.minTrackBar = new System.Windows.Forms.TrackBar();
@@ -106,17 +105,6 @@ namespace src
             this.plotViewMaskOffTone.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
             this.plotViewMaskOffTone.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plotViewMaskOffTone.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
-            // 
-            // plotView2
-            // 
-            this.plotView2.Location = new System.Drawing.Point(0, 0);
-            this.plotView2.Name = "plotView2";
-            this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView2.Size = new System.Drawing.Size(0, 0);
-            this.plotView2.TabIndex = 7;
-            this.plotView2.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotView2.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotView2.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
             // plotViewMaskOnTone
             // 
@@ -224,7 +212,6 @@ namespace src
             this.Controls.Add(this.button3);
             this.Controls.Add(this.minTrackBar);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.plotView2);
             this.Controls.Add(this.buttonPlay);
             this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.label1);
@@ -232,6 +219,7 @@ namespace src
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -249,7 +237,6 @@ namespace src
         private Button buttonPlay;
         private Button buttonStop;
         private OxyPlot.WindowsForms.PlotView plotViewMaskOffTone;
-        private OxyPlot.WindowsForms.PlotView plotView2;
         private OxyPlot.WindowsForms.PlotView plotViewMaskOnTone;
         private SplitContainer splitContainer1;
         private TrackBar minTrackBar;

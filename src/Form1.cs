@@ -6,6 +6,7 @@ using System;
 using System.Windows.Forms;
 using MathNet.Numerics;
 using MathNet.Numerics.IntegralTransforms;
+using System.Threading.Tasks;
 
 namespace src
 {
@@ -135,32 +136,42 @@ namespace src
             audioFile = null;
         }
 
-        private void ScrollZoomUpdate()
+        private static async Task<bool> ZoomPlotAsync(PlotData plot, int x1, int x2)
+        {
+            await Task.Run(() => plot.XAxis.Zoom(x1, x2));
+            return true;
+        }
+
+        private async Task ScrollZoomUpdateAsync()
         {
             int x1 = minTrackBar.Value * 160;
             int x2 = maxTrackBar.Value * 160;
-            maskOffTone.XAxis.Zoom(x1, x2);
-            maskOnTone.XAxis.Zoom(x1, x2);
+
+            Task<bool> task1 = ZoomPlotAsync(maskOffTone, x1, x2);
+            Task<bool> task2 = ZoomPlotAsync(maskOnTone, x1, x2);
+
             label3.Text = $"From {(double)minTrackBar.Value / 100}s to {(double)maxTrackBar.Value / 100}s.";
-            splitContainer1.Refresh();
+
+            if (await task1 && await task2)
+                splitContainer1.Refresh();
         }
 
-        private void MaxTrackBar_ValueChanged(object sender, EventArgs e)
+        private async void MaxTrackBar_ValueChanged(object sender, EventArgs e)
         {
             if (maxTrackBar.Value <= minTrackBar.Value)
             {
                 maxTrackBar.Value++;
             }
-            ScrollZoomUpdate();
+            await ScrollZoomUpdateAsync();
         }
 
-        private void MinTrackBar_ValueChanged(object sender, EventArgs e)
+        private async void MinTrackBar_ValueChanged(object sender, EventArgs e)
         {
             if (minTrackBar.Value >= maxTrackBar.Value)
             {
                 minTrackBar.Value--;
             }
-            ScrollZoomUpdate();
+            await ScrollZoomUpdateAsync();
         }
 
         private void ZoomPlusButton_Click(object sender, EventArgs e)
