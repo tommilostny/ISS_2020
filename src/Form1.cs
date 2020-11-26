@@ -143,7 +143,7 @@ namespace src
 
         private static async Task<string> ZoomLabelStringAsync(int minTBValue, int maxTBValue)
         {
-            return await Task.Run(() => $"From {(double)minTBValue / 100}s to {(double)maxTBValue / 100}s.");
+            return await Task.Run(() => $"from {(double)minTBValue / 100}s to {(double)maxTBValue / 100}s");
         }
 
         private async Task ScrollZoomUpdateAsync()
@@ -156,9 +156,9 @@ namespace src
             var labelTask = ZoomLabelStringAsync(minTrackBar.Value, maxTrackBar.Value);
 
             await Task.WhenAll(zoomTask1, zoomTask2);
-            splitContainer1.Refresh();
+            plotsSplitContainer.Refresh();
 
-            label3.Text = await labelTask;
+            intervalLabel.Text = await labelTask;
         }
 
         private async void MaxTrackBar_ValueChanged(object sender, EventArgs e)
@@ -179,7 +179,7 @@ namespace src
             await ScrollZoomUpdateAsync();
         }
 
-        private void ZoomPlusButton_Click(object sender, EventArgs e)
+        private void ZoomInButton_Click(object sender, EventArgs e)
         {
             if (maxTrackBar.Value - minTrackBar.Value > 1)
             {
@@ -191,13 +191,31 @@ namespace src
             }
         }
 
-        private void ZoomMinusButton_Click(object sender, EventArgs e)
+        private void ZoomOutButton_Click(object sender, EventArgs e)
         {
             if (minTrackBar.Value > 0)
                 minTrackBar.Value--;
 
             if (maxTrackBar.Value < 100)
                 maxTrackBar.Value++;
+        }
+
+        private void MoveForwardButton_Click(object sender, EventArgs e)
+        {
+            if (maxTrackBar.Value < 100)
+            {
+                maxTrackBar.Value++;
+                minTrackBar.Value++;
+            }
+        }
+
+        private void MoveBackwardButton_Click(object sender, EventArgs e)
+        {
+            if (minTrackBar.Value > 0)
+            {
+                minTrackBar.Value--;
+                maxTrackBar.Value--;
+            }
         }
     }
 }
