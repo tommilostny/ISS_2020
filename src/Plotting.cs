@@ -3,7 +3,6 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,18 +34,28 @@ namespace src
             return datapoints;
         }
 
-        public static void NormalizeDataPoints(PlotData p1, PlotData p2)
+        private static async Task NormalizeAsync(DataPoint[] points, double max)
+        {
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < points.Length; i++)
+                {
+                    points[i] = new(points[i].X, points[i].Y / max);
+                }
+            });
+        }
+
+        public static async void NormalizeDataPointsAsync(PlotData p1, PlotData p2)
         {
             double m1 = p1.DataPoints.Max(point => point.Y);
             double m2 = p2.DataPoints.Max(point => point.Y);
             double max = m1 > m2 ? m1 : m2;
 
-            for (int i = 0; i < p1.DataPoints.Length; i++)
-            {
-                p1.DataPoints[i] = new(p1.DataPoints[i].X, p1.DataPoints[i].Y / max);
-                p2.DataPoints[i] = new(p2.DataPoints[i].X, p2.DataPoints[i].Y / max);
-            }
+            var task1 = NormalizeAsync(p1.DataPoints, max);
+            var task2 = NormalizeAsync(p2.DataPoints, max);
+
             p1.IsNormalized = p2.IsNormalized = true;
+            await Task.WhenAll(task1, task2);
         }
 
         public static PlotModel PlotWavFile(PlotData plotData)
