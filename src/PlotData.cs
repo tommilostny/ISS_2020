@@ -20,10 +20,15 @@ namespace src
             get
             {
                 if (dps == null)
+                {
                     dps = Plotting.LoadAudioSamples(FullFilePath, (int)(Seconds * Plotting.Fs));
+                    IsNormalized = false;
+                }
                 return dps;
             }
             set => dps = value;
         }
+
+        public bool IsNormalized { get; set; } = false;
     }
 }

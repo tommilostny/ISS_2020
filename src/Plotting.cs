@@ -46,6 +46,7 @@ namespace src
                 p1.DataPoints[i] = new(p1.DataPoints[i].X, p1.DataPoints[i].Y / max);
                 p2.DataPoints[i] = new(p2.DataPoints[i].X, p2.DataPoints[i].Y / max);
             }
+            p1.IsNormalized = p2.IsNormalized = true;
         }
 
         public static PlotModel PlotWavFile(PlotData plotData)
@@ -67,8 +68,8 @@ namespace src
             };
             var y_axis = new LinearAxis
             {
-                Maximum = 1,
-                Minimum = -1,
+                Maximum = plotData.IsNormalized ? 1 : 1100,
+                Minimum = plotData.IsNormalized ? -1 : -1100,
                 Position = AxisPosition.Left,
                 IsZoomEnabled = false
             };
