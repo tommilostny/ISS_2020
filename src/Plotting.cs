@@ -47,8 +47,8 @@ namespace src
 
         public static async void NormalizeDataPointsAsync(PlotData p1, PlotData p2)
         {
-            double m1 = p1.DataPoints.Max(point => point.Y);
-            double m2 = p2.DataPoints.Max(point => point.Y);
+            double m1 = p1.DataPoints.Max(point => Math.Abs(point.Y));
+            double m2 = p2.DataPoints.Max(point => Math.Abs(point.Y));
             double max = m1 > m2 ? m1 : m2;
 
             var task1 = NormalizeAsync(p1.DataPoints, max);
