@@ -17,16 +17,12 @@ namespace src
         private DataPoint[] dps = null;
         public DataPoint[] DataPoints
         {
-            get
+            get => dps switch
             {
-                if (dps == null)
-                {
-                    dps = Plotting.LoadAudioSamples(FullFilePath, (int)(Seconds * Plotting.Fs));
-                    IsNormalized = false;
-                }
-                return dps;
-            }
-            set => dps = value;
+                null => dps = Plotting.LoadAudioSamples(FullFilePath, (int)(Seconds * Plotting.Fs)),
+                _ => dps
+            };
+            set { dps = value; IsNormalized = false; }
         }
 
         public bool IsNormalized { get; set; } = false;
