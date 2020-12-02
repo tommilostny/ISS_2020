@@ -19,17 +19,21 @@ namespace src
             maskOffTone = new PlotData
             {
                 PlotTitle = "Mask off tone",
-                FileName = "maskoff_tone.wav"
+                FileName = "maskoff_tone.wav",
+                Seconds = 1.0
             };
             maskOnTone = new PlotData
             {
                 PlotTitle = "Mask on tone",
-                FileName = "maskon_tone.wav"
+                FileName = "maskon_tone.wav",
+                Seconds = 1.0
             };
 
             buttonPlay.Click += filePlayer.OnButtonPlayClick;
             buttonStop.Click += filePlayer.OnButtonStopClick;
             comboBox1.SelectedIndexChanged += filePlayer.OnButtonStopClick;
+
+            Plotting.NormalizeDataPoints(maskOnTone, maskOffTone);
 
             plotViewMaskOffTone.Model = Plotting.PlotWavFile(maskOffTone);
             plotViewMaskOnTone.Model = Plotting.PlotWavFile(maskOnTone);

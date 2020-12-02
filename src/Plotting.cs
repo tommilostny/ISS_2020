@@ -3,6 +3,8 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
+using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -10,9 +12,9 @@ namespace src
 {
     public static class Plotting
     {
-        private const int Fs = 16000;           //16000 = 1s (Fs = 16kHz)
+        public const int Fs = 16000;           //16000 = 1s (Fs = 16kHz)
 
-        private static DataPoint[] LoadAudioSamples(string filePath, int samplesCount = Fs)
+        public static DataPoint[] LoadAudioSamples(string filePath, int samplesCount = Fs)
         {
             var datapoints = new DataPoint[samplesCount];
             var samples = new short[samplesCount];
@@ -33,7 +35,20 @@ namespace src
             return datapoints;
         }
 
-        public static PlotModel PlotWavFile(PlotData plotData, double seconds = 1.0)
+        public static void NormalizeDataPoints(PlotData p1, PlotData p2)
+        {
+            double m1 = p1.DataPoints.Max(point => point.Y);
+            double m2 = p2.DataPoints.Max(point => point.Y);
+            double max = m1 > m2 ? m1 : m2;
+
+            for (int i = 0; i < p1.DataPoints.Length; i++)
+            {
+                p1.DataPoints[i] = new(p1.DataPoints[i].X, p1.DataPoints[i].Y / max);
+                p2.DataPoints[i] = new(p2.DataPoints[i].X, p2.DataPoints[i].Y / max);
+            }
+        }
+
+        public static PlotModel PlotWavFile(PlotData plotData)
         {
             //OxyPlot model setup
             var pm = new PlotModel
@@ -46,14 +61,14 @@ namespace src
             //XY axes setup
             plotData.XAxis = new LinearAxis
             {
-                Maximum = seconds * Fs,
+                Maximum = plotData.Seconds * Fs,
                 Minimum = 0,
                 Position = AxisPosition.Bottom
             };
             var y_axis = new LinearAxis
             {
-                Maximum = 1100,
-                Minimum = -1100,
+                Maximum = 1,
+                Minimum = -1,
                 Position = AxisPosition.Left,
                 IsZoomEnabled = false
             };
@@ -66,7 +81,7 @@ namespace src
                 MarkerStroke = OxyColors.Green,
                 MarkerType = MarkerType.Circle
             };
-            stemSeries.Points.AddRange(LoadAudioSamples(plotData.FullFilePath, (int)(seconds * Fs)));
+            stemSeries.Points.AddRange(plotData.DataPoints);
             pm.Series.Add(stemSeries);
 
             return pm;
