@@ -45,18 +45,10 @@ namespace ProjectISS
             });
         }
 
-        private static async Task<double> GetMaxAsync(SamplesData points)
-        {
-            return await Task.Run(() => points.DataPoints.Max(point => Math.Abs(point.Y)));
-        }
-
         public static async void NormalizeDataPointsAsync(SamplesData p1, SamplesData p2)
         {
-            var mtask1 = GetMaxAsync(p1);
-            var mtask2 = GetMaxAsync(p2);
-
-            double m1 = await mtask1;
-            double m2 = await mtask2;
+            double m1 = p1.DataPoints.Max(point => Math.Abs(point.Y));
+            double m2 = p2.DataPoints.Max(point => Math.Abs(point.Y));
             double max = m1 > m2 ? m1 : m2;
 
             var task1 = NormalizeAsync(p1.DataPoints, max);
