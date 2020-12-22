@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace src
+namespace ProjectISS
 {
     partial class Form1
     {

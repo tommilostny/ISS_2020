@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace src
+namespace ProjectISS
 {
     public partial class Form1 : Form
     {
         private readonly Playback filePlayer;
 
-        private readonly PlotData maskOffTone;  //Mask on data for plotting
-        private readonly PlotData maskOnTone;   //Mask off data for plotting
+        private readonly SamplesData maskOffTone;  //Mask on data for plotting
+        private readonly SamplesData maskOnTone;   //Mask off data for plotting
 
         public Form1()
         {
@@ -16,13 +16,13 @@ namespace src
             comboBox1.SelectedIndex = 0;
             filePlayer = new Playback(comboBox1);
 
-            maskOffTone = new PlotData
+            maskOffTone = new SamplesData
             {
                 PlotTitle = "Mask off tone",
                 FileName = "maskoff_tone.wav",
                 Seconds = 1.0
             };
-            maskOnTone = new PlotData
+            maskOnTone = new SamplesData
             {
                 PlotTitle = "Mask on tone",
                 FileName = "maskon_tone.wav",

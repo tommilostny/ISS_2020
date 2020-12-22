@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace src
+namespace ProjectISS
 {
     public static class Plotting
     {
@@ -45,10 +45,18 @@ namespace src
             });
         }
 
-        public static async void NormalizeDataPointsAsync(PlotData p1, PlotData p2)
+        private static async Task<double> GetMaxAsync(SamplesData points)
         {
-            double m1 = p1.DataPoints.Max(point => Math.Abs(point.Y));
-            double m2 = p2.DataPoints.Max(point => Math.Abs(point.Y));
+            return await Task.Run(() => points.DataPoints.Max(point => Math.Abs(point.Y)));
+        }
+
+        public static async void NormalizeDataPointsAsync(SamplesData p1, SamplesData p2)
+        {
+            var mtask1 = GetMaxAsync(p1);
+            var mtask2 = GetMaxAsync(p2);
+
+            double m1 = await mtask1;
+            double m2 = await mtask2;
             double max = m1 > m2 ? m1 : m2;
 
             var task1 = NormalizeAsync(p1.DataPoints, max);
@@ -58,7 +66,7 @@ namespace src
             await Task.WhenAll(task1, task2);
         }
 
-        public static PlotModel PlotWavFile(PlotData plotData)
+        public static PlotModel PlotWavFile(SamplesData plotData)
         {
             //OxyPlot model setup
             var pm = new PlotModel
@@ -97,7 +105,7 @@ namespace src
             return pm;
         }
 
-        private static async Task ZoomPlotAsync(PlotData plot, int x1, int x2)
+        private static async Task ZoomPlotAsync(SamplesData plot, int x1, int x2)
         {
             await Task.Run(() => plot.XAxis.Zoom(x1, x2));
         }
@@ -107,7 +115,7 @@ namespace src
             return await Task.Run(() => $"from {(double)minTBValue / 100}s to {(double)maxTBValue / 100}s");
         }
 
-        public static async Task<string> ScrollZoomUpdateAsync(TrackBar min, TrackBar max, SplitContainer plotsSplitContainer, PlotData plot1, PlotData plot2)
+        public static async Task<string> ScrollZoomUpdateAsync(TrackBar min, TrackBar max, SplitContainer plotsSplitContainer, SamplesData plot1, SamplesData plot2)
         {
             int x1 = min.Value * 160;
             int x2 = max.Value * 160;
