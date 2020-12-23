@@ -34,27 +34,29 @@ namespace ProjectISS
             return datapoints;
         }
 
-        private static async Task NormalizeAsync(DataPoint[] points, double max)
+        private static async Task MeanNormalizeDataPointsAsync(DataPoint[] points)
         {
             await Task.Run(() =>
             {
+                //normalizace (x /= np.abs(x).max())
+                double max = points.Max(point => Math.Abs(point.Y));
+
+                //ustřednění (x -= np.mean(x)), ekvivalent Average
+                double mean = points.Average(point => point.Y);
+
                 for (int i = 0; i < points.Length; i++)
                 {
-                    points[i] = new(points[i].X, points[i].Y / max);
+                    points[i] = new(points[i].X, (points[i].Y - mean) / max);
                 }
             });
         }
 
-        public static async void NormalizeDataPointsAsync(SamplesData p1, SamplesData p2)
+        public static async void MeanNormalizeAsync(SamplesData x1, SamplesData x2)
         {
-            double m1 = p1.DataPoints.Max(point => Math.Abs(point.Y));
-            double m2 = p2.DataPoints.Max(point => Math.Abs(point.Y));
-            double max = m1 > m2 ? m1 : m2;
+            var task1 = MeanNormalizeDataPointsAsync(x1.DataPoints);
+            var task2 = MeanNormalizeDataPointsAsync(x2.DataPoints);
 
-            var task1 = NormalizeAsync(p1.DataPoints, max);
-            var task2 = NormalizeAsync(p2.DataPoints, max);
-
-            p1.IsNormalized = p2.IsNormalized = true;
+            x1.IsNormalized = x2.IsNormalized = true;
             await Task.WhenAll(task1, task2);
         }
 
@@ -86,13 +88,12 @@ namespace ProjectISS
             pm.Axes.Add(y_axis);
 
             //Setup stem
-            var stemSeries = new StemSeries
+            var lineSeries = new LineSeries
             {
-                MarkerStroke = OxyColors.Green,
-                MarkerType = MarkerType.Circle
+                Color = OxyColors.DodgerBlue
             };
-            stemSeries.Points.AddRange(plotData.DataPoints);
-            pm.Series.Add(stemSeries);
+            lineSeries.Points.AddRange(plotData.DataPoints);
+            pm.Series.Add(lineSeries);
 
             return pm;
         }

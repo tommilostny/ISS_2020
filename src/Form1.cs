@@ -33,7 +33,7 @@ namespace ProjectISS
             buttonStop.Click += filePlayer.OnButtonStopClick;
             comboBox1.SelectedIndexChanged += filePlayer.OnButtonStopClick;
 
-            Plotting.NormalizeDataPointsAsync(maskOffTone, maskOnTone);
+            Plotting.MeanNormalizeAsync(maskOffTone, maskOnTone);
 
             plotViewMaskOffTone.Model = Plotting.PlotWavFile(maskOffTone);
             plotViewMaskOnTone.Model = Plotting.PlotWavFile(maskOnTone);
