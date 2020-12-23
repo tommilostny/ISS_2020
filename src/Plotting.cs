@@ -29,7 +29,9 @@ namespace ProjectISS
             //Convert read array to datapoints for OxyPlot
             for (int i = 0; i < samplesCount; i++)
             {
-                datapoints[i] = new DataPoint(i, samples[i]);
+                //datapoint.X: time
+                //datapoint.Y: sample value
+                datapoints[i] = new DataPoint((double)i / Fs, samples[i]);
             }
             return datapoints;
         }
@@ -73,7 +75,7 @@ namespace ProjectISS
             //XY axes setup
             plotData.XAxis = new LinearAxis
             {
-                Maximum = plotData.Seconds * Fs,
+                Maximum = plotData.Seconds,
                 Minimum = 0,
                 Position = AxisPosition.Bottom
             };
@@ -98,29 +100,23 @@ namespace ProjectISS
             return pm;
         }
 
-        private static async Task ZoomPlotAsync(SamplesData plot, int x1, int x2)
+        private static async Task ZoomPlotAsync(SamplesData plot, double x1, double x2)
         {
             await Task.Run(() => plot.XAxis.Zoom(x1, x2));
         }
 
-        private static async Task<string> ZoomLabelStringAsync(int minTBValue, int maxTBValue)
-        {
-            return await Task.Run(() => $"from {(double)minTBValue / 100}s to {(double)maxTBValue / 100}s");
-        }
-
         public static async Task<string> ScrollZoomUpdateAsync(TrackBar min, TrackBar max, SplitContainer plotsSplitContainer, SamplesData plot1, SamplesData plot2)
         {
-            int x1 = min.Value * 160;
-            int x2 = max.Value * 160;
+            double x1 = min.Value / 100.0;
+            double x2 = max.Value / 100.0;
 
             var zoomTask1 = ZoomPlotAsync(plot1, x1, x2);
             var zoomTask2 = ZoomPlotAsync(plot2, x1, x2);
-            var labelTask = ZoomLabelStringAsync(min.Value, max.Value);
 
             await Task.WhenAll(zoomTask1, zoomTask2);
             plotsSplitContainer.Refresh();
 
-            return await labelTask;
+            return $"from {x1}s to {x2}s";
         }
     }
 }
