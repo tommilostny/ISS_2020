@@ -36,7 +36,7 @@ namespace ProjectISS
             return datapoints;
         }
 
-        private static async Task MeanNormalizeDataPointsAsync(DataPoint[] points)
+        private static async Task MeanNormalizeRoutineAsync(DataPoint[] points)
         {
             await Task.Run(() =>
             {
@@ -55,10 +55,30 @@ namespace ProjectISS
 
         public static async void MeanNormalizeAsync(SamplesData x1, SamplesData x2)
         {
-            var task1 = MeanNormalizeDataPointsAsync(x1.DataPoints);
-            var task2 = MeanNormalizeDataPointsAsync(x2.DataPoints);
+            var task1 = MeanNormalizeRoutineAsync(x1.DataPoints);
+            var task2 = MeanNormalizeRoutineAsync(x2.DataPoints);
 
             x1.IsNormalized = x2.IsNormalized = true;
+            await Task.WhenAll(task1, task2);
+        }
+
+
+        private static async Task FramesRoutineAsync(SamplesData x, double frameLengthMs)
+        {
+            int frameLength = (int)(frameLengthMs / 1000 * Fs);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < x.DataPoints.Length - frameLength / 2; i += frameLength / 2)
+                {
+                    x.Frames.Add(new Frame(x.DataPoints, i, frameLength));
+                }
+            });
+        }
+
+        public static async void LoadFramesAsync(SamplesData x1, SamplesData x2, int frameLengthMs)
+        {
+            var task1 = FramesRoutineAsync(x1, frameLengthMs);
+            var task2 = FramesRoutineAsync(x2, frameLengthMs);
             await Task.WhenAll(task1, task2);
         }
 

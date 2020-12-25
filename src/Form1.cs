@@ -37,6 +37,8 @@ namespace ProjectISS
 
             plotViewMaskOffTone.Model = Plotting.PlotWavFile(maskOffTone);
             plotViewMaskOnTone.Model = Plotting.PlotWavFile(maskOnTone);
+
+            Plotting.LoadFramesAsync(maskOffTone, maskOnTone, 20);
         }
 
         private async void MaxTrackBar_ValueChanged(object sender, EventArgs e)

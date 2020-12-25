@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
+using System.Collections.Generic;
 
 namespace ProjectISS
 {
@@ -26,5 +27,21 @@ namespace ProjectISS
         }
 
         public bool IsNormalized { get; set; } = false;
+
+        public List<Frame> Frames { get; set; } = new List<Frame>();
+    }
+
+    public record Frame
+    {
+        public DataPoint[] DataPoints { get; }
+
+        public Frame(DataPoint[] dataPoints, int startIndex, int length)
+        {
+            DataPoints = new DataPoint[length];
+            for (int i = startIndex; i < startIndex + length; i++)
+            {
+                DataPoints[i - startIndex] = new(dataPoints[i].X, dataPoints[i].Y);
+            }
+        }
     }
 }
