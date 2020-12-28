@@ -40,15 +40,18 @@ namespace ProjectISS
         {
             await Task.Run(() =>
             {
-                //normalizace (x /= np.abs(x).max())
-                double max = points.Max(point => Math.Abs(point.Y));
-
                 //ustřednění (x -= np.mean(x)), ekvivalent Average
                 double mean = points.Average(point => point.Y);
-
                 for (int i = 0; i < points.Length; i++)
                 {
-                    points[i] = new(points[i].X, (points[i].Y - mean) / max);
+                    points[i] = new(points[i].X, points[i].Y - mean);
+                }
+
+                //normalizace (x /= np.abs(x).max())
+                double max = points.Max(point => Math.Abs(point.Y));
+                for (int i = 0; i < points.Length; i++)
+                {
+                    points[i] = new(points[i].X, points[i].Y / max);
                 }
             });
         }
@@ -65,12 +68,14 @@ namespace ProjectISS
 
         private static async Task FramesRoutineAsync(SamplesData x, double frameLengthMs)
         {
-            int frameLength = (int)(frameLengthMs / 1000 * Fs);
             await Task.Run(() =>
             {
+                //vzorec pro výpočet velikosti rámce ve vzorcích
+                int frameLength = (int)(frameLengthMs / 1000 * Fs);
+
                 for (int i = 0; i < x.DataPoints.Length - frameLength / 2; i += frameLength / 2)
                 {
-                    x.Frames.Add(new Frame(x.DataPoints, i, frameLength));
+                   x.Frames.Add(new Frame(x.DataPoints, i, frameLength));
                 }
             });
         }

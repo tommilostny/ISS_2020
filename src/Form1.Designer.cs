@@ -57,6 +57,7 @@ namespace ProjectISS
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.buttonFramesOff = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.plotsSplitContainer)).BeginInit();
             this.plotsSplitContainer.Panel1.SuspendLayout();
             this.plotsSplitContainer.Panel2.SuspendLayout();
@@ -380,11 +381,22 @@ namespace ProjectISS
             this.label3.TabIndex = 16;
             this.label3.Text = "Interval:";
             // 
+            // buttonFramesOff
+            // 
+            this.buttonFramesOff.Location = new System.Drawing.Point(141, 498);
+            this.buttonFramesOff.Name = "buttonFramesOff";
+            this.buttonFramesOff.Size = new System.Drawing.Size(94, 29);
+            this.buttonFramesOff.TabIndex = 17;
+            this.buttonFramesOff.Text = "Frames";
+            this.buttonFramesOff.UseVisualStyleBackColor = true;
+            this.buttonFramesOff.Click += new System.EventHandler(this.ButtonFramesOff_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1082, 653);
+            this.Controls.Add(this.buttonFramesOff);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
@@ -402,7 +414,7 @@ namespace ProjectISS
             this.Controls.Add(this.comboBox1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ISS";
+            this.Text = "Frames 1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.plotsSplitContainer.Panel1.ResumeLayout(false);
             this.plotsSplitContainer.Panel1.PerformLayout();
@@ -447,6 +459,7 @@ namespace ProjectISS
         private Button button6;
         private Button button7;
         private Label label3;
+        private Button buttonFramesOff;
     }
 }
 

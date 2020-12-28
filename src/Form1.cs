@@ -97,5 +97,27 @@ namespace ProjectISS
                 maxTrackBar.Value--;
             }
         }
+
+        private void ButtonFramesOff_Click(object sender, EventArgs e)
+        {
+            var frameForm1 = new FrameForm(maskOffTone)
+            {
+                Text = $"{maskOffTone.PlotTitle} frames",
+                StartPosition = FormStartPosition.Manual,
+                Left = 40,
+                Top = 200
+            };
+
+            var frameForm2 = new FrameForm(maskOnTone)
+            {
+                Text = $"{maskOnTone.PlotTitle} frames",
+                StartPosition = FormStartPosition.Manual,
+                Left = 955,
+                Top = 200
+            };
+
+            frameForm1.Show();
+            frameForm2.Show();
+        }
     }
 }
