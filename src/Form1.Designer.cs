@@ -389,7 +389,7 @@ namespace ProjectISS
             this.buttonFramesOff.TabIndex = 17;
             this.buttonFramesOff.Text = "Frames";
             this.buttonFramesOff.UseVisualStyleBackColor = true;
-            this.buttonFramesOff.Click += new System.EventHandler(this.ButtonFramesOff_Click);
+            this.buttonFramesOff.Click += new System.EventHandler(this.ButtonFrames_Click);
             // 
             // Form1
             // 

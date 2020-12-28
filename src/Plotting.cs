@@ -75,7 +75,7 @@ namespace ProjectISS
 
                 for (int i = 0; i < x.DataPoints.Length - frameLength / 2; i += frameLength / 2)
                 {
-                   x.Frames.Add(new Frame(x.DataPoints, i, frameLength));
+                    x.Frames.Add(new Frame(x.DataPoints, i, frameLength));
                 }
             });
         }
@@ -123,25 +123,6 @@ namespace ProjectISS
             pm.Series.Add(lineSeries);
 
             return pm;
-        }
-
-        private static async Task ZoomPlotAsync(SamplesData plot, double x1, double x2)
-        {
-            await Task.Run(() => plot.XAxis.Zoom(x1, x2));
-        }
-
-        public static async Task<string> ScrollZoomUpdateAsync(TrackBar min, TrackBar max, SplitContainer plotsSplitContainer, SamplesData plot1, SamplesData plot2)
-        {
-            double x1 = min.Value / 100.0;
-            double x2 = max.Value / 100.0;
-
-            var zoomTask1 = ZoomPlotAsync(plot1, x1, x2);
-            var zoomTask2 = ZoomPlotAsync(plot2, x1, x2);
-
-            await Task.WhenAll(zoomTask1, zoomTask2);
-            plotsSplitContainer.Refresh();
-
-            return $"from {x1}s to {x2}s";
         }
     }
 }

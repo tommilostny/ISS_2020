@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProjectISS
@@ -47,7 +48,7 @@ namespace ProjectISS
             {
                 maxTrackBar.Value++;
             }
-            intervalLabel.Text = await Plotting.ScrollZoomUpdateAsync(minTrackBar, maxTrackBar, plotsSplitContainer, maskOffTone, maskOnTone);
+            intervalLabel.Text = await ScrollZoomUpdateAsync();
         }
 
         private async void MinTrackBar_ValueChanged(object sender, EventArgs e)
@@ -56,7 +57,26 @@ namespace ProjectISS
             {
                 minTrackBar.Value--;
             }
-            intervalLabel.Text = await Plotting.ScrollZoomUpdateAsync(minTrackBar, maxTrackBar, plotsSplitContainer, maskOffTone, maskOnTone);
+            intervalLabel.Text = await ScrollZoomUpdateAsync();
+        }
+
+        private static async Task ZoomPlotAsync(SamplesData plot, double x1, double x2)
+        {
+            await Task.Run(() => plot.XAxis.Zoom(x1, x2));
+        }
+
+        private async Task<string> ScrollZoomUpdateAsync()
+        {
+            double x1 = minTrackBar.Value / 100.0;
+            double x2 = maxTrackBar.Value / 100.0;
+
+            var zoomTask1 = ZoomPlotAsync(maskOnTone, x1, x2);
+            var zoomTask2 = ZoomPlotAsync(maskOffTone, x1, x2);
+
+            await Task.WhenAll(zoomTask1, zoomTask2);
+            plotsSplitContainer.Refresh();
+
+            return $"from {x1}s to {x2}s";
         }
 
         private void ZoomInButton_Click(object sender, EventArgs e)
@@ -98,12 +118,11 @@ namespace ProjectISS
             }
         }
 
-        private void ButtonFramesOff_Click(object sender, EventArgs e)
+        private void ButtonFrames_Click(object sender, EventArgs e)
         {
             var frameForm1 = new FrameForm(maskOffTone)
             {
                 Text = $"{maskOffTone.PlotTitle} frames",
-                StartPosition = FormStartPosition.Manual,
                 Left = 40,
                 Top = 200
             };
@@ -111,7 +130,6 @@ namespace ProjectISS
             var frameForm2 = new FrameForm(maskOnTone)
             {
                 Text = $"{maskOnTone.PlotTitle} frames",
-                StartPosition = FormStartPosition.Manual,
                 Left = 955,
                 Top = 200
             };
