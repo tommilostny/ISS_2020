@@ -31,6 +31,7 @@ namespace ProjectISS
             button1.Enabled = index != 0;
             button2.Enabled = index != Data.Frames.Count - 1;
             lastIndex = index;
+            label1.Text = $"Frame: {lastIndex + 1}/{Data.Frames.Count}";
 
             var x_axis = new LinearAxis
             {
