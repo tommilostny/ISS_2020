@@ -19,15 +19,15 @@ namespace ProjectISS
 
             maskOffTone = new SamplesData
             {
-                PlotTitle = "Mask off tone",
+                PlotTitle = "Tón bez roušky",
                 FileName = "maskoff_tone.wav",
-                Seconds = 1.0
+                Seconds = 1.01
             };
             maskOnTone = new SamplesData
             {
-                PlotTitle = "Mask on tone",
+                PlotTitle = "Tón s rouškou",
                 FileName = "maskon_tone.wav",
-                Seconds = 1.0
+                Seconds = 1.01
             };
 
             buttonPlay.Click += filePlayer.OnButtonPlayClick;

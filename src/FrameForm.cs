@@ -48,7 +48,10 @@ namespace ProjectISS
                 IsZoomEnabled = false
             };
 
-            var pm = new PlotModel();
+            var pm = new PlotModel
+            {
+                Title = Data.PlotTitle,
+            };
             pm.Axes.Add(x_axis);
             pm.Axes.Add(y_axis);
 
