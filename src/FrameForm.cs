@@ -16,6 +16,7 @@ namespace ProjectISS
         public FrameForm(SamplesData data)
         {
             InitializeComponent();
+            button3.Enabled = !data.Frames[0].IsCenterClipped;
             Data = data;
             PlotFrame(0);
 
@@ -84,6 +85,7 @@ namespace ProjectISS
         {
             await SharedFuncs.CenterClippingAsync(Data);
             PlotFrame(lastIndex);
+            button3.Enabled = false;
         }
     }
 }

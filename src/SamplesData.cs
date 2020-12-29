@@ -34,6 +34,8 @@ namespace ProjectISS
     {
         public DataPoint[] DataPoints { get; }
 
+        public bool IsCenterClipped { get; set; } = false;
+
         public Frame(DataPoint[] dataPoints, int startIndex, int length)
         {
             DataPoints = new DataPoint[length];

@@ -149,6 +149,7 @@ namespace ProjectISS
                         frame.DataPoints[i] = new(frame.DataPoints[i].X, 0);
                     }
                 }
+                frame.IsCenterClipped = true;
             });
         }
 
