@@ -79,5 +79,11 @@ namespace ProjectISS
         {
             PlotFrame(Convert.ToInt32(comboBox1.Items[comboBox1.SelectedIndex]));
         }
+
+        private async void ButtonCenterClipping_Click(object sender, EventArgs e)
+        {
+            await SharedFuncs.CenterClippingAsync(Data);
+            PlotFrame(lastIndex);
+        }
     }
 }

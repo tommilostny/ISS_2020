@@ -34,12 +34,12 @@ namespace ProjectISS
             buttonStop.Click += filePlayer.OnButtonStopClick;
             comboBox1.SelectedIndexChanged += filePlayer.OnButtonStopClick;
 
-            Plotting.MeanNormalizeAsync(maskOffTone, maskOnTone);
+            SharedFuncs.MeanNormalizeAsync(maskOffTone, maskOnTone);
 
-            plotViewMaskOffTone.Model = Plotting.PlotWavFile(maskOffTone);
-            plotViewMaskOnTone.Model = Plotting.PlotWavFile(maskOnTone);
+            plotViewMaskOffTone.Model = SharedFuncs.PlotWavFile(maskOffTone);
+            plotViewMaskOnTone.Model = SharedFuncs.PlotWavFile(maskOnTone);
 
-            Plotting.LoadFramesAsync(maskOffTone, maskOnTone, 20);
+            SharedFuncs.LoadFramesAsync(maskOffTone, maskOnTone, 20);
         }
 
         private async void MaxTrackBar_ValueChanged(object sender, EventArgs e)

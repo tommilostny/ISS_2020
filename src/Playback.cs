@@ -23,12 +23,12 @@ namespace ProjectISS
 
         public void OnButtonPlayClick(object sender, EventArgs e)
         {
-            if (outputDevice == null)
+            if (outputDevice is null)
             {
                 outputDevice = new WaveOutEvent();
                 outputDevice.PlaybackStopped += OnPlaybackStopped;
             }
-            if (audioFile == null)
+            if (audioFile is null)
             {
                 audioFile = new AudioFileReader(SelectedFile);
                 outputDevice.Init(audioFile);

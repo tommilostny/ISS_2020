@@ -3,13 +3,13 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ProjectISS
 {
-    public static class Plotting
+    public static class SharedFuncs
     {
         public const int Fs = 16000;           //16000 = 1s (Fs = 16kHz)
 
@@ -123,6 +123,51 @@ namespace ProjectISS
             pm.Series.Add(lineSeries);
 
             return pm;
+        }
+
+        private static async Task CenterClippingRoutineAsync(Frame frame)
+        {
+            await Task.Run(() =>
+            {
+                /* vzorky, které jsou nad 70 % maxima absolutní hodnoty převedeme na 1,
+                 * pod 70 % záporného maxima absolutní hodnoty převedeme na -1 a ostatní na 0
+                 */
+                double threshold = frame.DataPoints.Max(point => Math.Abs(point.Y)) * 0.7;
+
+                for (int i = 0; i < frame.DataPoints.Length; i++)
+                {
+                    if (frame.DataPoints[i].Y > threshold)
+                    {
+                        frame.DataPoints[i] = new(frame.DataPoints[i].X, 1);
+                    }
+                    else if (frame.DataPoints[i].Y < -threshold)
+                    {
+                        frame.DataPoints[i] = new(frame.DataPoints[i].X, -1);
+                    }
+                    else
+                    {
+                        frame.DataPoints[i] = new(frame.DataPoints[i].X, 0);
+                    }
+                }
+            });
+        }
+
+        public static async Task CenterClippingAsync(SamplesData x)
+        {
+            var tasks = new List<Task>();
+            foreach (var frame in x.Frames)
+            {
+                tasks.Add(CenterClippingRoutineAsync(frame));
+            }
+            await Task.WhenAll(tasks);
+        }
+
+        private static async Task AutocorrelationAsync(Frame frame)
+        {
+            await Task.Run(() =>
+            {
+
+            });
         }
     }
 }

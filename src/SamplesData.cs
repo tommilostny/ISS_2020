@@ -20,15 +20,14 @@ namespace ProjectISS
         {
             get => dps switch
             {
-                null => dps = Plotting.LoadAudioSamples(FullFilePath, (int)(Seconds * Plotting.Fs)),
+                null => dps = SharedFuncs.LoadAudioSamples(FullFilePath, (int)(Seconds * SharedFuncs.Fs)),
                 _ => dps
             };
-            set { dps = value; IsNormalized = false; }
         }
 
         public bool IsNormalized { get; set; } = false;
 
-        public List<Frame> Frames { get; set; } = new List<Frame>();
+        public List<Frame> Frames { get; } = new List<Frame>();
     }
 
     public record Frame
