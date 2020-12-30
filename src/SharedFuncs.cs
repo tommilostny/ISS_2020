@@ -164,24 +164,37 @@ namespace ProjectISS
             await Task.WhenAll(tasks);
         }
 
-        public static void Autocorrelation(Frame frame)
+        private static async Task AutocorrelationRoutineAsync(Frame frame)
         {
-            int N = frame.DataPoints.Length;
-            for (int k = 0; k < N; k++)
+            await Task.Run(() =>
             {
-                var tmp = new List<double>();
-                for (int n = 0; n < N - k - 1; n++)
+                int N = frame.DataPoints.Length;
+                for (int k = 0; k < N; k++)
                 {
-                    tmp.Add(frame.DataPoints[n].Y * frame.DataPoints[n + k].Y);
-                }
-                double sum = tmp.Sum();
-                frame.AutocorrelationCoeficients[k] = new(k, sum);
+                    var tmp = new List<double>();
+                    for (int n = 0; n < N - k - 1; n++)
+                    {
+                        tmp.Add(frame.DataPoints[n].Y * frame.DataPoints[n + k].Y);
+                    }
+                    double sum = tmp.Sum();
+                    frame.AutocorrelationCoeficients[k] = new(k, sum);
 
-                if (k >= 32 && (k == 32 || sum > frame.LagPoint.Y))
-                {
-                    frame.LagPoint = frame.AutocorrelationCoeficients[k];
+                    if (k >= 32 && (k == 32 || sum > frame.LagPoint.Y))
+                    {
+                        frame.LagPoint = frame.AutocorrelationCoeficients[k];
+                    }
                 }
+            });
+        }
+
+        public static async Task AutocorrelationAsync(SamplesData x)
+        {
+            var tasks = new List<Task>();
+            foreach (var frame in x.Frames)
+            {
+                tasks.Add(AutocorrelationRoutineAsync(frame));
             }
+            await Task.WhenAll(tasks);
         }
     }
 }

@@ -120,18 +120,18 @@ namespace ProjectISS
 
         private void ShowFramesDialogs()
         {
-            var frameForm1 = new FrameForm(maskOffTone)
+            var frameForm1 = new FrameForm(maskOffTone, false)
             {
                 Text = $"{maskOffTone.PlotTitle} frames",
-                Left = 40,
-                Top = 200
+                Left = 5,
+                Top = 20
             };
 
-            var frameForm2 = new FrameForm(maskOnTone)
+            var frameForm2 = new FrameForm(maskOnTone, false)
             {
                 Text = $"{maskOnTone.PlotTitle} frames",
-                Left = 955,
-                Top = 200
+                Left = 935,
+                Top = 20
             };
 
             frameForm1.Show();
@@ -143,13 +143,37 @@ namespace ProjectISS
             ShowFramesDialogs();
         }
 
+        private void ShowAutocorrelationsDialogs()
+        {
+            var frameForm1 = new FrameForm(maskOffTone, true)
+            {
+                Text = $"{maskOffTone.PlotTitle} frames autocorrelation",
+                Left = 5,
+                Top = 500
+            };
+
+            var frameForm2 = new FrameForm(maskOnTone, true)
+            {
+                Text = $"{maskOnTone.PlotTitle} frames autocorrelation",
+                Left = 935,
+                Top = 500
+            };
+
+            frameForm1.Show();
+            frameForm2.Show();
+        }
+
         private async void ButtonCenterClipping_Click(object sender, EventArgs e)
         {
-            var task1 = SharedFuncs.CenterClippingAsync(maskOnTone);
-            var task2 = SharedFuncs.CenterClippingAsync(maskOffTone);
-            
-            await Task.WhenAll(task1, task2);
+            var clipTask1 = SharedFuncs.CenterClippingAsync(maskOnTone);
+            var clipTask2 = SharedFuncs.CenterClippingAsync(maskOffTone);
+            await Task.WhenAll(clipTask1, clipTask2);
             ShowFramesDialogs();
+
+            var autoTask1 = SharedFuncs.AutocorrelationAsync(maskOnTone);
+            var autoTask2 = SharedFuncs.AutocorrelationAsync(maskOffTone);
+            await Task.WhenAll(autoTask1, autoTask2);
+            ShowAutocorrelationsDialogs();
         }
 
         private void ButtonAutocorrelation_Click(object sender, EventArgs e)

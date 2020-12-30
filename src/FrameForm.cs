@@ -13,31 +13,37 @@ namespace ProjectISS
 
         private int lastIndex;
 
-        public FrameForm(SamplesData data, int autocorrelationFrameIndex = -1)
+        private readonly bool isAutocorrelation;
+
+        public FrameForm(SamplesData data, bool isAutocorrelation)
         {
             InitializeComponent();
             Data = data;
+            this.isAutocorrelation = isAutocorrelation;
 
-            if (autocorrelationFrameIndex == -1)
+            for (int i = 0; i < data.Frames.Count - 1; i += 5)
             {
-                PlotFrame(0);
-
-                for (int i = 0; i < data.Frames.Count - 1; i += 5)
-                {
-                    comboBox1.Items.Add(i);
-                }
-                comboBox1.SelectedIndex = 0;
+                comboBox1.Items.Add(i);
             }
+            comboBox1.SelectedIndex = 0;
+
+            if (isAutocorrelation)
+                PlotAutocorrelation(0);
             else
-                PlotAutocorrelation(autocorrelationFrameIndex);
+                PlotFrame(0);
         }
 
-        private void PlotFrame(int index)
+        private void SetNavButtons(int index)
         {
             button1.Enabled = index != 0;
             button2.Enabled = index != Data.Frames.Count - 1;
             lastIndex = index;
             label1.Text = $"Frame: {lastIndex + 1}/{Data.Frames.Count}";
+        }
+
+        private void PlotFrame(int index)
+        {
+            SetNavButtons(index);
 
             var x_axis = new LinearAxis
             {
@@ -73,23 +79,33 @@ namespace ProjectISS
 
         private void ButtonPrev_Click(object sender, EventArgs e)
         {
-            PlotFrame(lastIndex - 1);
+            if (isAutocorrelation)
+                PlotAutocorrelation(lastIndex - 1);
+            else
+                PlotFrame(lastIndex - 1);
         }
 
         private void ButtonNext_Click(object sender, EventArgs e)
         {
-            PlotFrame(lastIndex + 1);
+            if (isAutocorrelation)
+                PlotAutocorrelation(lastIndex + 1);
+            else
+                PlotFrame(lastIndex + 1);
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PlotFrame(Convert.ToInt32(comboBox1.Items[comboBox1.SelectedIndex]));
+            int index = Convert.ToInt32(comboBox1.Items[comboBox1.SelectedIndex]);
+
+            if (isAutocorrelation)
+                PlotAutocorrelation(index);
+            else
+                PlotFrame(index);
         }
 
         private void PlotAutocorrelation(int frameIndex)
         {
-            button1.Enabled = button2.Enabled = button3.Enabled = comboBox1.Enabled = false;
-            label1.Text = $"Frame: {frameIndex + 1}/{Data.Frames.Count}";
+            SetNavButtons(frameIndex);
 
             var x_axis = new LinearAxis
             {
@@ -140,20 +156,6 @@ namespace ProjectISS
             pm.Series.Add(lagPoint);
 
             plotView1.Model = pm;
-        }
-
-        private void ButtonAutocorr_Click(object sender, EventArgs e)
-        {
-            SharedFuncs.Autocorrelation(Data.Frames[lastIndex]);
-
-            var frameForm = new FrameForm(Data, lastIndex)
-            {
-                Text = $"{Data.PlotTitle} (frame {lastIndex + 1} autocorrelation)",
-                Left = ActiveForm.Left + 5,
-                Top = ActiveForm.Top + 5
-            };
-
-            frameForm.Show();
         }
     }
 }
