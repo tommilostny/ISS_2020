@@ -58,6 +58,8 @@ namespace ProjectISS
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonFramesOff = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.plotsSplitContainer)).BeginInit();
             this.plotsSplitContainer.Panel1.SuspendLayout();
             this.plotsSplitContainer.Panel2.SuspendLayout();
@@ -115,7 +117,7 @@ namespace ProjectISS
             this.plotViewMaskOffTone.Location = new System.Drawing.Point(3, 3);
             this.plotViewMaskOffTone.Name = "plotViewMaskOffTone";
             this.plotViewMaskOffTone.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewMaskOffTone.Size = new System.Drawing.Size(823, 303);
+            this.plotViewMaskOffTone.Size = new System.Drawing.Size(823, 314);
             this.plotViewMaskOffTone.TabIndex = 5;
             this.plotViewMaskOffTone.Text = "plotViewMaskOffTone";
             this.plotViewMaskOffTone.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -131,7 +133,7 @@ namespace ProjectISS
             this.plotViewMaskOnTone.Location = new System.Drawing.Point(3, 3);
             this.plotViewMaskOnTone.Name = "plotViewMaskOnTone";
             this.plotViewMaskOnTone.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewMaskOnTone.Size = new System.Drawing.Size(823, 309);
+            this.plotViewMaskOnTone.Size = new System.Drawing.Size(823, 322);
             this.plotViewMaskOnTone.TabIndex = 6;
             this.plotViewMaskOnTone.Text = "plotView1";
             this.plotViewMaskOnTone.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -161,8 +163,8 @@ namespace ProjectISS
             // plotsSplitContainer.Panel2
             // 
             this.plotsSplitContainer.Panel2.Controls.Add(this.plotViewMaskOnTone);
-            this.plotsSplitContainer.Size = new System.Drawing.Size(829, 629);
-            this.plotsSplitContainer.SplitterDistance = 309;
+            this.plotsSplitContainer.Size = new System.Drawing.Size(829, 653);
+            this.plotsSplitContainer.SplitterDistance = 320;
             this.plotsSplitContainer.TabIndex = 8;
             // 
             // label6
@@ -190,8 +192,8 @@ namespace ProjectISS
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.plotView2);
-            this.splitContainer2.Size = new System.Drawing.Size(829, 629);
-            this.splitContainer2.SplitterDistance = 309;
+            this.splitContainer2.Size = new System.Drawing.Size(829, 640);
+            this.splitContainer2.SplitterDistance = 314;
             this.splitContainer2.TabIndex = 8;
             // 
             // plotView1
@@ -203,7 +205,7 @@ namespace ProjectISS
             this.plotView1.Location = new System.Drawing.Point(3, 3);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(823, 303);
+            this.plotView1.Size = new System.Drawing.Size(823, 308);
             this.plotView1.TabIndex = 5;
             this.plotView1.Text = "plotViewMaskOffTone";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -219,7 +221,7 @@ namespace ProjectISS
             this.plotView2.Location = new System.Drawing.Point(3, 3);
             this.plotView2.Name = "plotView2";
             this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView2.Size = new System.Drawing.Size(823, 309);
+            this.plotView2.Size = new System.Drawing.Size(823, 315);
             this.plotView2.TabIndex = 6;
             this.plotView2.Text = "plotView1";
             this.plotView2.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -284,7 +286,7 @@ namespace ProjectISS
             this.minTrackBar.Maximum = 99;
             this.minTrackBar.Name = "minTrackBar";
             this.minTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.minTrackBar.Size = new System.Drawing.Size(56, 394);
+            this.minTrackBar.Size = new System.Drawing.Size(56, 418);
             this.minTrackBar.SmallChange = 5;
             this.minTrackBar.TabIndex = 7;
             this.minTrackBar.ValueChanged += new System.EventHandler(this.MinTrackBar_ValueChanged);
@@ -319,7 +321,7 @@ namespace ProjectISS
             this.maxTrackBar.Minimum = 1;
             this.maxTrackBar.Name = "maxTrackBar";
             this.maxTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.maxTrackBar.Size = new System.Drawing.Size(56, 394);
+            this.maxTrackBar.Size = new System.Drawing.Size(56, 418);
             this.maxTrackBar.SmallChange = 5;
             this.maxTrackBar.TabIndex = 10;
             this.maxTrackBar.Value = 100;
@@ -383,19 +385,41 @@ namespace ProjectISS
             // 
             // buttonFramesOff
             // 
-            this.buttonFramesOff.Location = new System.Drawing.Point(141, 498);
+            this.buttonFramesOff.Location = new System.Drawing.Point(106, 498);
             this.buttonFramesOff.Name = "buttonFramesOff";
-            this.buttonFramesOff.Size = new System.Drawing.Size(94, 29);
+            this.buttonFramesOff.Size = new System.Drawing.Size(129, 29);
             this.buttonFramesOff.TabIndex = 17;
             this.buttonFramesOff.Text = "Frames";
             this.buttonFramesOff.UseVisualStyleBackColor = true;
             this.buttonFramesOff.Click += new System.EventHandler(this.ButtonFrames_Click);
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(106, 533);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(129, 29);
+            this.button9.TabIndex = 18;
+            this.button9.Text = "Center clipping";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.ButtonCenterClipping_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(106, 568);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(129, 29);
+            this.button10.TabIndex = 19;
+            this.button10.Text = "Autocorrelation";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.ButtonAutocorrelation_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1082, 653);
+            this.ClientSize = new System.Drawing.Size(1082, 677);
+            this.Controls.Add(this.button10);
+            this.Controls.Add(this.button9);
             this.Controls.Add(this.buttonFramesOff);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
@@ -414,7 +438,7 @@ namespace ProjectISS
             this.Controls.Add(this.comboBox1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Frames 1";
+            this.Text = "Project ISS 2020";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.plotsSplitContainer.Panel1.ResumeLayout(false);
             this.plotsSplitContainer.Panel1.PerformLayout();
@@ -460,6 +484,8 @@ namespace ProjectISS
         private Button button7;
         private Label label3;
         private Button buttonFramesOff;
+        private Button button9;
+        private Button button10;
     }
 }
 

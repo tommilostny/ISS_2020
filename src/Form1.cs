@@ -118,7 +118,7 @@ namespace ProjectISS
             }
         }
 
-        private void ButtonFrames_Click(object sender, EventArgs e)
+        private void ShowFramesDialogs()
         {
             var frameForm1 = new FrameForm(maskOffTone)
             {
@@ -136,6 +136,28 @@ namespace ProjectISS
 
             frameForm1.Show();
             frameForm2.Show();
+        }
+
+        private void ButtonFrames_Click(object sender, EventArgs e)
+        {
+            ShowFramesDialogs();
+        }
+
+        private async void ButtonCenterClipping_Click(object sender, EventArgs e)
+        {
+            var task1 = SharedFuncs.CenterClippingAsync(maskOnTone);
+            var task2 = SharedFuncs.CenterClippingAsync(maskOffTone);
+            
+            await Task.WhenAll(task1, task2);
+            ShowFramesDialogs();
+        }
+
+        private void ButtonAutocorrelation_Click(object sender, EventArgs e)
+        {
+        //    var task1 = SharedFuncs.AutocorrelationAsync(maskOffTone);
+          //  var task2 = SharedFuncs.AutocorrelationAsync(maskOnTone);
+
+            //await Task.WhenAll(task1, task2);
         }
     }
 }

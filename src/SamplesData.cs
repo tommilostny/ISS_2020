@@ -34,10 +34,13 @@ namespace ProjectISS
     {
         public DataPoint[] DataPoints { get; }
 
-        public bool IsCenterClipped { get; set; } = false;
+        public DataPoint[] AutocorrelationCoeficients { get; }
+
+        public DataPoint LagPoint { get; set; }
 
         public Frame(DataPoint[] dataPoints, int startIndex, int length)
         {
+            AutocorrelationCoeficients = new DataPoint[length];
             DataPoints = new DataPoint[length];
             for (int i = startIndex; i < startIndex + length; i++)
             {

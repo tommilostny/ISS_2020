@@ -45,7 +45,7 @@ namespace ProjectISS
             this.plotView1.Location = new System.Drawing.Point(12, 73);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(878, 428);
+            this.plotView1.Size = new System.Drawing.Size(958, 368);
             this.plotView1.TabIndex = 0;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -76,7 +76,7 @@ namespace ProjectISS
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(797, 13);
+            this.comboBox1.Location = new System.Drawing.Point(877, 13);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(93, 28);
             this.comboBox1.TabIndex = 3;
@@ -93,20 +93,20 @@ namespace ProjectISS
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(648, 13);
+            this.button3.Location = new System.Drawing.Point(645, 12);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(143, 29);
+            this.button3.Size = new System.Drawing.Size(137, 29);
             this.button3.TabIndex = 5;
-            this.button3.Text = "Center clipping";
+            this.button3.Text = "Autocorrelation";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.ButtonCenterClipping_Click);
+            this.button3.Click += new System.EventHandler(this.ButtonAutocorr_Click);
             // 
             // FrameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(902, 513);
+            this.ClientSize = new System.Drawing.Size(982, 453);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);

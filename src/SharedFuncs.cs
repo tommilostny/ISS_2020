@@ -1,4 +1,5 @@
 ﻿using NAudio.Wave;
+using NumSharp.Extensions;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ProjectISS
 {
@@ -149,7 +151,6 @@ namespace ProjectISS
                         frame.DataPoints[i] = new(frame.DataPoints[i].X, 0);
                     }
                 }
-                frame.IsCenterClipped = true;
             });
         }
 
@@ -163,12 +164,24 @@ namespace ProjectISS
             await Task.WhenAll(tasks);
         }
 
-        private static async Task AutocorrelationAsync(Frame frame)
+        public static void Autocorrelation(Frame frame)
         {
-            await Task.Run(() =>
+            int N = frame.DataPoints.Length;
+            for (int k = 0; k < N; k++)
             {
+                var tmp = new List<double>();
+                for (int n = 0; n < N - k - 1; n++)
+                {
+                    tmp.Add(frame.DataPoints[n].Y * frame.DataPoints[n + k].Y);
+                }
+                double sum = tmp.Sum();
+                frame.AutocorrelationCoeficients[k] = new(k, sum);
 
-            });
+                if (k >= 32 && (k == 32 || sum > frame.LagPoint.Y))
+                {
+                    frame.LagPoint = frame.AutocorrelationCoeficients[k];
+                }
+            }
         }
     }
 }
