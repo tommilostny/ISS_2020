@@ -161,6 +161,7 @@ namespace ProjectISS
 
             frameForm1.Show();
             frameForm2.Show();
+            new F0Form(maskOffTone, maskOnTone).Show();
         }
 
         private async void ButtonCenterClipping_Click(object sender, EventArgs e)

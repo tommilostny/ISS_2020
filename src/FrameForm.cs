@@ -50,14 +50,16 @@ namespace ProjectISS
                 Maximum = Data.Frames[index].DataPoints.Last().X,
                 Minimum = Data.Frames[index].DataPoints.First().X,
                 Position = AxisPosition.Bottom,
-                IsZoomEnabled = false
+                IsZoomEnabled = false,
+                Title = "time"
             };
             var y_axis = new LinearAxis
             {
                 Maximum = 1.05,
                 Minimum = -1.05,
                 Position = AxisPosition.Left,
-                IsZoomEnabled = false
+                IsZoomEnabled = false,
+                Title = "y"
             };
 
             var pm = new PlotModel
@@ -112,14 +114,16 @@ namespace ProjectISS
                 Maximum = Data.Frames[frameIndex].AutocorrelationCoeficients.Length,
                 Minimum = 0,
                 Position = AxisPosition.Bottom,
-                IsZoomEnabled = false
+                IsZoomEnabled = false,
+                Title = "vzorky"
             };
             var y_axis = new LinearAxis
             {
                 Maximum = Data.Frames.Max(f => f.AutocorrelationCoeficients.Max(p => p.Y)) + 0.05,
                 Minimum = Data.Frames.Min(f => f.AutocorrelationCoeficients.Min(p => p.Y)) - 0.05,
                 Position = AxisPosition.Left,
-                IsZoomEnabled = false
+                IsZoomEnabled = false,
+                Title = "y"
             };
 
             var pm = new PlotModel
@@ -137,17 +141,20 @@ namespace ProjectISS
 
             var thresholdPoint = new StemSeries
             {
-                Color = OxyColors.Black
+                Color = OxyColors.Black,
+                StrokeThickness = 1,
+                Title = "Práh"
             };
-            thresholdPoint.Points.Add(new DataPoint(32, 1000));
-            thresholdPoint.Points.Add(new DataPoint(32, -1000));
+            thresholdPoint.Points.Add(new DataPoint(SharedFuncs.AutocorrThreshold, 1000));
+            thresholdPoint.Points.Add(new DataPoint(SharedFuncs.AutocorrThreshold, -1000));
 
             var lagPoint = new StemSeries
             {
                 MarkerStroke = OxyColors.Red,
                 MarkerFill = OxyColors.Red,
                 MarkerType = MarkerType.Circle,
-                MarkerStrokeThickness = 6
+                MarkerStrokeThickness = 6,
+                Title = "Lag"
             };
             lagPoint.Points.Add(Data.Frames[frameIndex].LagPoint);
 

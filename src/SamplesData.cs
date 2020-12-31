@@ -28,6 +28,8 @@ namespace ProjectISS
         public bool IsNormalized { get; set; } = false;
 
         public List<Frame> Frames { get; } = new List<Frame>();
+
+        public DataPoint[] F0Points { get; set; }
     }
 
     public record Frame
@@ -37,6 +39,8 @@ namespace ProjectISS
         public DataPoint[] AutocorrelationCoeficients { get; }
 
         public DataPoint LagPoint { get; set; }
+
+
 
         public Frame(DataPoint[] dataPoints, int startIndex, int length)
         {

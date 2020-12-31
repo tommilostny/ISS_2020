@@ -1,5 +1,4 @@
 ﻿using NAudio.Wave;
-using NumSharp.Extensions;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -7,13 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ProjectISS
 {
     public static class SharedFuncs
     {
         public const int Fs = 16000;           //16000 = 1s (Fs = 16kHz)
+
+        public const int AutocorrThreshold = 10;
 
         public static DataPoint[] LoadAudioSamples(string filePath, int samplesCount = Fs)
         {
@@ -164,11 +164,12 @@ namespace ProjectISS
             await Task.WhenAll(tasks);
         }
 
-        private static async Task AutocorrelationRoutineAsync(Frame frame)
+        private static async Task<double> AutocorrelationRoutineAsync(Frame frame)
         {
-            await Task.Run(() =>
+            return await Task.Run(() =>
             {
                 int N = frame.DataPoints.Length;
+                int lagIndex = AutocorrThreshold;
                 for (int k = 0; k < N; k++)
                 {
                     var tmp = new List<double>();
@@ -179,22 +180,32 @@ namespace ProjectISS
                     double sum = tmp.Sum();
                     frame.AutocorrelationCoeficients[k] = new(k, sum);
 
-                    if (k >= 32 && (k == 32 || sum > frame.LagPoint.Y))
+                    if (k >= AutocorrThreshold && (k == AutocorrThreshold || sum > frame.LagPoint.Y))
                     {
                         frame.LagPoint = frame.AutocorrelationCoeficients[k];
+                        lagIndex = k;
                     }
                 }
+                return (double)Fs / lagIndex;
             });
         }
 
         public static async Task AutocorrelationAsync(SamplesData x)
         {
-            var tasks = new List<Task>();
+            var tasks = new List<Task<double>>();
+            x.F0Points = new DataPoint[x.Frames.Count];
+
+            //run autocorrelation for every frame
             foreach (var frame in x.Frames)
             {
                 tasks.Add(AutocorrelationRoutineAsync(frame));
             }
-            await Task.WhenAll(tasks);
+
+            //get lag indexes from each autocorrelation, transform into f0
+            for (int i = 0; i < x.F0Points.Length; i++)
+            {
+                x.F0Points[i] = new(i, await tasks[i]);
+            }
         }
     }
 }
