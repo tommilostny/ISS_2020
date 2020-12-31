@@ -176,13 +176,5 @@ namespace ProjectISS
             await Task.WhenAll(autoTask1, autoTask2);
             ShowAutocorrelationsDialogs();
         }
-
-        private void ButtonAutocorrelation_Click(object sender, EventArgs e)
-        {
-        //    var task1 = SharedFuncs.AutocorrelationAsync(maskOffTone);
-          //  var task2 = SharedFuncs.AutocorrelationAsync(maskOnTone);
-
-            //await Task.WhenAll(task1, task2);
-        }
     }
 }

@@ -40,8 +40,6 @@ namespace ProjectISS
 
         public DataPoint LagPoint { get; set; }
 
-
-
         public Frame(DataPoint[] dataPoints, int startIndex, int length)
         {
             AutocorrelationCoeficients = new DataPoint[length];

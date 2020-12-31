@@ -59,7 +59,6 @@ namespace ProjectISS
             this.label3 = new System.Windows.Forms.Label();
             this.buttonFramesOff = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.plotsSplitContainer)).BeginInit();
             this.plotsSplitContainer.Panel1.SuspendLayout();
             this.plotsSplitContainer.Panel2.SuspendLayout();
@@ -403,22 +402,11 @@ namespace ProjectISS
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.ButtonCenterClipping_Click);
             // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(106, 568);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(129, 29);
-            this.button10.TabIndex = 19;
-            this.button10.Text = "Autocorrelation";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.ButtonAutocorrelation_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1082, 677);
-            this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.buttonFramesOff);
             this.Controls.Add(this.label3);
@@ -485,7 +473,6 @@ namespace ProjectISS
         private Label label3;
         private Button buttonFramesOff;
         private Button button9;
-        private Button button10;
     }
 }
 
