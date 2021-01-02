@@ -248,29 +248,21 @@ namespace ProjectISS
                 x.Frames[i].DFTCoeficients = await tasks[i];
             }
         }
-
-        private static async Task<double> FrequencyChar(Frame frame1, Frame frame2)
-        {
-            return await Task.Run(() =>
-            {
-                var a = frame1.DFTCoeficients.Sum(c => Complex.Abs(c));
-                var b = frame2.DFTCoeficients.Sum(c => Complex.Abs(c));
-                return b / (1 + a);
-            });
-        }
         
-        public static async Task<DataPoint[]> FrequencyChar(SamplesData x1, SamplesData x2)
+        public static DataPoint[] FrequencyChar(SamplesData x, SamplesData y, int N = 1024)
         {
-            var tasks = new List<Task<double>>();
-            for (int i = 0; i < x1.Frames.Count; i++)
+            var result = new DataPoint[N / 2];
+            for (int k = 0; k < N / 2; k++)
             {
-                tasks.Add(FrequencyChar(x1.Frames[i], x2.Frames[i]));
-            }
+                var a = new List<double>();
+                var b = new List<double>();
 
-            var result = new DataPoint[x1.Frames.Count];
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                result[i] = new(i, await tasks[i]);
+                for (int i = 0; i < x.Frames.Count; i++)
+                {
+                    a.Add(Complex.Abs(x.Frames[i].DFTCoeficients[k]));
+                    b.Add(Complex.Abs(y.Frames[i].DFTCoeficients[k]));
+                }
+                result[k] = new(k, b.Average() / (1 + a.Average()));
             }
             return result;
         }

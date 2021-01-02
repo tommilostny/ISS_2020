@@ -18,7 +18,6 @@ namespace ProjectISS.Forms
                 Minimum = 0,
                 Position = AxisPosition.Bottom,
                 IsZoomEnabled = false,
-                Title = "rámce"
             };
 
             var y_axis = new LinearAxis
@@ -27,10 +26,9 @@ namespace ProjectISS.Forms
                 Minimum = freqCharPoints.Min(point => point.Y),
                 Position = AxisPosition.Left,
                 IsZoomEnabled = false,
-                Title = "H"
             };
 
-            var pm = new PlotModel();
+            var pm = new PlotModel { Title = "Frekvenční charakteristika" };
             pm.Axes.Add(x_axis);
             pm.Axes.Add(y_axis);
 

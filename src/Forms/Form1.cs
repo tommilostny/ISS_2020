@@ -191,7 +191,7 @@ namespace ProjectISS
             specform1.Show();
             specform2.Show();
 
-            new FreqCharForm(await SharedFuncs.FrequencyChar(maskOnTone, maskOffTone)).Show();
+            new FreqCharForm(SharedFuncs.FrequencyChar(maskOffTone, maskOnTone)).Show();
         }
     }
 }
