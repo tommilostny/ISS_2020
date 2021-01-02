@@ -176,5 +176,16 @@ namespace ProjectISS
             await Task.WhenAll(autoTask1, autoTask2);
             ShowAutocorrelationsDialogs();
         }
+
+        private async void ButtonDFT_Click(object sender, EventArgs e)
+        {
+            await SharedFuncs.DFT_AllFrames(maskOffTone);
+            var specform1 = new SpectrogramForm(maskOffTone);
+            specform1.Show();
+
+            await SharedFuncs.DFT_AllFrames(maskOnTone);
+            var specform2 = new SpectrogramForm(maskOnTone);
+            specform2.Show();
+        }
     }
 }

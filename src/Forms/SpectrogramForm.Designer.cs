@@ -1,7 +1,7 @@
 ﻿
 namespace ProjectISS
 {
-    partial class F0Form
+    partial class SpectrogramForm
     {
         /// <summary>
         /// Required designer variable.
@@ -40,23 +40,22 @@ namespace ProjectISS
             this.plotView1.Location = new System.Drawing.Point(12, 12);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(958, 379);
+            this.plotView1.Size = new System.Drawing.Size(1058, 529);
             this.plotView1.TabIndex = 0;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
             this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
-            // F0Form
+            // SpectrogramForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(982, 403);
+            this.ClientSize = new System.Drawing.Size(1082, 553);
             this.Controls.Add(this.plotView1);
-            this.Name = "F0Form";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "F0Form";
+            this.Name = "SpectrogramForm";
+            this.Text = "SpectrogramForm";
             this.ResumeLayout(false);
 
         }

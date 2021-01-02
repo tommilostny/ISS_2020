@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace ProjectISS
 {
@@ -30,6 +31,8 @@ namespace ProjectISS
         public List<Frame> Frames { get; } = new List<Frame>();
 
         public DataPoint[] F0Points { get; set; }
+
+        public List<Complex[]> DFTCoeficients { get; } = new List<Complex[]>();
     }
 
     public record Frame

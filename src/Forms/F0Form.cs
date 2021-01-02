@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -57,6 +58,21 @@ namespace ProjectISS
             pm.Series.Add(lineSeries2);
 
             plotView1.Model = pm;
+
+            MeanVariance(x1, label1, label2);
+            MeanVariance(x2, label3, label4);
+        }
+
+        private static void MeanVariance(SamplesData x, Label label1, Label label2)
+        {
+            //E(X) = x^_ (average)
+            double Mean = Math.Round(x.F0Points.Average(p => p.Y), 4);
+
+            //D(X) = E(X^2) - (E(X))^2
+            double Variance = Math.Round(x.F0Points.Average(p => Math.Pow(p.Y, 2)) - Math.Pow(Mean, 2), 4);
+
+            label1.Text = $"Střední hodnota ({x.PlotTitle}): {Mean}";
+            label2.Text = $"Rozptyl ({x.PlotTitle}): {Variance}";
         }
     }
 }

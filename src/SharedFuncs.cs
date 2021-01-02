@@ -5,6 +5,7 @@ using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace ProjectISS
@@ -38,7 +39,7 @@ namespace ProjectISS
             return datapoints;
         }
 
-        private static async Task MeanNormalizeRoutineAsync(DataPoint[] points)
+        private static async Task MeanNormalize_RoutineAsync(DataPoint[] points)
         {
             await Task.Run(() =>
             {
@@ -60,15 +61,15 @@ namespace ProjectISS
 
         public static async void MeanNormalizeAsync(SamplesData x1, SamplesData x2)
         {
-            var task1 = MeanNormalizeRoutineAsync(x1.DataPoints);
-            var task2 = MeanNormalizeRoutineAsync(x2.DataPoints);
+            var task1 = MeanNormalize_RoutineAsync(x1.DataPoints);
+            var task2 = MeanNormalize_RoutineAsync(x2.DataPoints);
 
             x1.IsNormalized = x2.IsNormalized = true;
             await Task.WhenAll(task1, task2);
         }
 
 
-        private static async Task FramesRoutineAsync(SamplesData x, double frameLengthMs)
+        private static async Task Frames_RoutineAsync(SamplesData x, double frameLengthMs)
         {
             await Task.Run(() =>
             {
@@ -84,8 +85,8 @@ namespace ProjectISS
 
         public static async void LoadFramesAsync(SamplesData x1, SamplesData x2, int frameLengthMs)
         {
-            var task1 = FramesRoutineAsync(x1, frameLengthMs);
-            var task2 = FramesRoutineAsync(x2, frameLengthMs);
+            var task1 = Frames_RoutineAsync(x1, frameLengthMs);
+            var task2 = Frames_RoutineAsync(x2, frameLengthMs);
             await Task.WhenAll(task1, task2);
         }
 
@@ -127,7 +128,7 @@ namespace ProjectISS
             return pm;
         }
 
-        private static async Task CenterClippingRoutineAsync(Frame frame)
+        private static async Task CenterClipping_RoutineAsync(Frame frame)
         {
             await Task.Run(() =>
             {
@@ -159,12 +160,12 @@ namespace ProjectISS
             var tasks = new List<Task>();
             foreach (var frame in x.Frames)
             {
-                tasks.Add(CenterClippingRoutineAsync(frame));
+                tasks.Add(CenterClipping_RoutineAsync(frame));
             }
             await Task.WhenAll(tasks);
         }
 
-        private static async Task<double> AutocorrelationRoutineAsync(Frame frame)
+        private static async Task<double> Autocorrelation_RoutineAsync(Frame frame)
         {
             return await Task.Run(() =>
             {
@@ -198,13 +199,53 @@ namespace ProjectISS
             //run autocorrelation for every frame
             foreach (var frame in x.Frames)
             {
-                tasks.Add(AutocorrelationRoutineAsync(frame));
+                tasks.Add(Autocorrelation_RoutineAsync(frame));
             }
 
             //get lag indexes from each autocorrelation, transform into f0
-            for (int i = 0; i < x.F0Points.Length; i++)
+            for (int i = 0; i < tasks.Count; i++)
             {
                 x.F0Points[i] = new(i, await tasks[i]);
+            }
+        }
+
+        private static async Task<Complex[]> DFT(Frame frame, int N = 1024)
+        {
+            return await Task.Run(() =>
+            {
+                var result = new Complex[N];
+
+                for (int k = 0; k < N; k++)
+                {
+                    var reals = new List<double>();
+                    var imags = new List<double>();
+                    for (int n = 0; n < N; n++)
+                    {
+                        if (n < frame.DataPoints.Length)
+                        {
+                            double arg = 2 * Math.PI * k * n / N;
+                            reals.Add(frame.DataPoints[n].Y * Math.Cos(arg));
+                            imags.Add(frame.DataPoints[n].Y * Math.Sin(arg));
+                        }
+                        else break; //zero padding (adding zeros to sums does nothing)
+                    }
+                    result[k] = new Complex(reals.Sum(), -imags.Sum());
+                }
+                return result;
+            });
+        }
+
+        public static async Task DFT_AllFrames(SamplesData x)
+        {
+            var tasks = new List<Task<Complex[]>>();
+            foreach (var frame in x.Frames)
+            {
+                tasks.Add(DFT(frame));
+            }
+
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                x.DFTCoeficients.Add(await tasks[i]);
             }
         }
     }
