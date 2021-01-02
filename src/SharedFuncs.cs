@@ -39,7 +39,7 @@ namespace ProjectISS
             return datapoints;
         }
 
-        private static async Task MeanNormalize_RoutineAsync(DataPoint[] points)
+        private static async Task MeanNormalize(DataPoint[] points)
         {
             await Task.Run(() =>
             {
@@ -59,17 +59,17 @@ namespace ProjectISS
             });
         }
 
-        public static async void MeanNormalizeAsync(SamplesData x1, SamplesData x2)
+        public static async void MeanNormalize(SamplesData x1, SamplesData x2)
         {
-            var task1 = MeanNormalize_RoutineAsync(x1.DataPoints);
-            var task2 = MeanNormalize_RoutineAsync(x2.DataPoints);
+            var task1 = MeanNormalize(x1.DataPoints);
+            var task2 = MeanNormalize(x2.DataPoints);
 
             x1.IsNormalized = x2.IsNormalized = true;
             await Task.WhenAll(task1, task2);
         }
 
 
-        private static async Task Frames_RoutineAsync(SamplesData x, double frameLengthMs)
+        private static async Task LoadFrames(SamplesData x, double frameLengthMs)
         {
             await Task.Run(() =>
             {
@@ -83,10 +83,10 @@ namespace ProjectISS
             });
         }
 
-        public static async void LoadFramesAsync(SamplesData x1, SamplesData x2, int frameLengthMs)
+        public static async void LoadFrames(SamplesData x1, SamplesData x2, int frameLengthMs)
         {
-            var task1 = Frames_RoutineAsync(x1, frameLengthMs);
-            var task2 = Frames_RoutineAsync(x2, frameLengthMs);
+            var task1 = LoadFrames(x1, frameLengthMs);
+            var task2 = LoadFrames(x2, frameLengthMs);
             await Task.WhenAll(task1, task2);
         }
 
@@ -128,7 +128,7 @@ namespace ProjectISS
             return pm;
         }
 
-        private static async Task CenterClipping_RoutineAsync(Frame frame)
+        private static async Task CenterClipping(Frame frame)
         {
             await Task.Run(() =>
             {
@@ -155,17 +155,17 @@ namespace ProjectISS
             });
         }
 
-        public static async Task CenterClippingAsync(SamplesData x)
+        public static async Task CenterClipping(SamplesData x)
         {
             var tasks = new List<Task>();
             foreach (var frame in x.Frames)
             {
-                tasks.Add(CenterClipping_RoutineAsync(frame));
+                tasks.Add(CenterClipping(frame));
             }
             await Task.WhenAll(tasks);
         }
 
-        private static async Task<double> Autocorrelation_RoutineAsync(Frame frame)
+        private static async Task<double> Autocorrelation(Frame frame)
         {
             return await Task.Run(() =>
             {
@@ -174,14 +174,14 @@ namespace ProjectISS
                 for (int k = 0; k < N; k++)
                 {
                     var tmp = new List<double>();
-                    for (int n = 0; n < N - k - 1; n++)
+                    for (int n = 0; n < N - k; n++)
                     {
                         tmp.Add(frame.DataPoints[n].Y * frame.DataPoints[n + k].Y);
                     }
-                    double sum = tmp.Sum();
+                    double sum = tmp.Sum() / N;
                     frame.AutocorrelationCoeficients[k] = new(k, sum);
 
-                    if (k >= AutocorrThreshold && (k == AutocorrThreshold || sum > frame.LagPoint.Y))
+                    if (k >= AutocorrThreshold && sum > frame.LagPoint.Y)
                     {
                         frame.LagPoint = frame.AutocorrelationCoeficients[k];
                         lagIndex = k;
@@ -191,7 +191,7 @@ namespace ProjectISS
             });
         }
 
-        public static async Task AutocorrelationAsync(SamplesData x)
+        public static async Task Autocorrelation(SamplesData x)
         {
             var tasks = new List<Task<double>>();
             x.F0Points = new DataPoint[x.Frames.Count];
@@ -199,7 +199,7 @@ namespace ProjectISS
             //run autocorrelation for every frame
             foreach (var frame in x.Frames)
             {
-                tasks.Add(Autocorrelation_RoutineAsync(frame));
+                tasks.Add(Autocorrelation(frame));
             }
 
             //get lag indexes from each autocorrelation, transform into f0
@@ -209,7 +209,7 @@ namespace ProjectISS
             }
         }
 
-        private static async Task<Complex[]> DFT(Frame frame, int N = 1024)
+        private static async Task<Complex[]> DFT(Frame frame, int N)
         {
             return await Task.Run(() =>
             {
@@ -235,18 +235,44 @@ namespace ProjectISS
             });
         }
 
-        public static async Task DFT_AllFrames(SamplesData x)
+        public static async Task DFT(SamplesData x, int N = 1024)
         {
             var tasks = new List<Task<Complex[]>>();
             foreach (var frame in x.Frames)
             {
-                tasks.Add(DFT(frame));
+                tasks.Add(DFT(frame, N));
             }
 
             for (int i = 0; i < tasks.Count; i++)
             {
-                x.DFTCoeficients.Add(await tasks[i]);
+                x.Frames[i].DFTCoeficients = await tasks[i];
             }
+        }
+
+        private static async Task<double> FrequencyChar(Frame frame1, Frame frame2)
+        {
+            return await Task.Run(() =>
+            {
+                var a = frame1.DFTCoeficients.Sum(c => Complex.Abs(c));
+                var b = frame2.DFTCoeficients.Sum(c => Complex.Abs(c));
+                return b / (1 + a);
+            });
+        }
+        
+        public static async Task<DataPoint[]> FrequencyChar(SamplesData x1, SamplesData x2)
+        {
+            var tasks = new List<Task<double>>();
+            for (int i = 0; i < x1.Frames.Count; i++)
+            {
+                tasks.Add(FrequencyChar(x1.Frames[i], x2.Frames[i]));
+            }
+
+            var result = new DataPoint[x1.Frames.Count];
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                result[i] = new(i, await tasks[i]);
+            }
+            return result;
         }
     }
 }

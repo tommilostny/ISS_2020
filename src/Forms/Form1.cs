@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectISS.Forms;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -34,12 +35,12 @@ namespace ProjectISS
             buttonStop.Click += filePlayer.OnButtonStopClick;
             comboBox1.SelectedIndexChanged += filePlayer.OnButtonStopClick;
 
-            SharedFuncs.MeanNormalizeAsync(maskOffTone, maskOnTone);
+            SharedFuncs.MeanNormalize(maskOffTone, maskOnTone);
 
             plotViewMaskOffTone.Model = SharedFuncs.PlotWavFile(maskOffTone);
             plotViewMaskOnTone.Model = SharedFuncs.PlotWavFile(maskOnTone);
 
-            SharedFuncs.LoadFramesAsync(maskOffTone, maskOnTone, 20);
+            SharedFuncs.LoadFrames(maskOffTone, maskOnTone, 20);
         }
 
         private async void MaxTrackBar_ValueChanged(object sender, EventArgs e)
@@ -166,26 +167,31 @@ namespace ProjectISS
 
         private async void ButtonCenterClipping_Click(object sender, EventArgs e)
         {
-            var clipTask1 = SharedFuncs.CenterClippingAsync(maskOnTone);
-            var clipTask2 = SharedFuncs.CenterClippingAsync(maskOffTone);
+            button10.Enabled = false;
+
+            var clipTask1 = SharedFuncs.CenterClipping(maskOnTone);
+            var clipTask2 = SharedFuncs.CenterClipping(maskOffTone);
             await Task.WhenAll(clipTask1, clipTask2);
             ShowFramesDialogs();
 
-            var autoTask1 = SharedFuncs.AutocorrelationAsync(maskOnTone);
-            var autoTask2 = SharedFuncs.AutocorrelationAsync(maskOffTone);
+            var autoTask1 = SharedFuncs.Autocorrelation(maskOnTone);
+            var autoTask2 = SharedFuncs.Autocorrelation(maskOffTone);
             await Task.WhenAll(autoTask1, autoTask2);
             ShowAutocorrelationsDialogs();
         }
 
         private async void ButtonDFT_Click(object sender, EventArgs e)
         {
-            await SharedFuncs.DFT_AllFrames(maskOffTone);
-            var specform1 = new SpectrogramForm(maskOffTone);
-            specform1.Show();
+            var task1 = SharedFuncs.DFT(maskOffTone);
+            var task2 = SharedFuncs.DFT(maskOnTone);
+            await Task.WhenAll(task1, task2);
 
-            await SharedFuncs.DFT_AllFrames(maskOnTone);
+            var specform1 = new SpectrogramForm(maskOffTone);
             var specform2 = new SpectrogramForm(maskOnTone);
+            specform1.Show();
             specform2.Show();
+
+            new FreqCharForm(await SharedFuncs.FrequencyChar(maskOnTone, maskOffTone)).Show();
         }
     }
 }

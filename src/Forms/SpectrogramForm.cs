@@ -17,46 +17,42 @@ namespace ProjectISS
 
             model.Axes.Add(new LinearColorAxis
             {
-                Palette = OxyPalettes.Rainbow(100)
+                Palette = OxyPalettes.Rainbow(128)
             });
 
             int topX = data.Frames.Count;
             int topY = SharedFuncs.Fs / 2;
 
             var heatmapData = new double[topX, topY];
-            int N = data.DFTCoeficients[0].Length;
+            int N = data.Frames[0].DFTCoeficients.Length;
 
             for (int x = 0; x < topX; x++)
             {
                 for (int k = 0; k < N; k++)
                 {
                     int freq = k * SharedFuncs.Fs / N / 2;
-                    heatmapData[x, freq] = 10 * Math.Log10(Math.Pow(Complex.Abs(data.DFTCoeficients[x][k]), 2));
+                    heatmapData[x, freq] = 10 * Math.Log10(Math.Pow(Complex.Abs(data.Frames[x].DFTCoeficients[k]), 2));
                 }
             }
 
             var x_axis = new LinearAxis
             {
                 Position = AxisPosition.Bottom,
-                IsZoomEnabled = false,
-                Title = "rámce"
+                Title = "čas [s]"
             };
 
             var y_axis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                IsZoomEnabled = false,
                 Title = "frekvence [Hz]"
             };
 
             var heatMapSeries = new HeatMapSeries
             {
                 X0 = 0,
-                X1 = topX,
+                X1 = data.Seconds,
                 Y0 = 0,
                 Y1 = topY,
-                Interpolate = true,
-                RenderMethod = HeatMapRenderMethod.Bitmap,
                 Data = heatmapData
             };
 
