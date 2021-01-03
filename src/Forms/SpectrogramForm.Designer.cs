@@ -30,6 +30,7 @@ namespace ProjectISS
         private void InitializeComponent()
         {
             this.plotView1 = new OxyPlot.WindowsForms.PlotView();
+            this.plotView2 = new OxyPlot.WindowsForms.PlotView();
             this.SuspendLayout();
             // 
             // plotView1
@@ -40,19 +41,34 @@ namespace ProjectISS
             this.plotView1.Location = new System.Drawing.Point(12, 12);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(1058, 529);
+            this.plotView1.Size = new System.Drawing.Size(1092, 529);
             this.plotView1.TabIndex = 0;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
             this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
+            // plotView2
+            // 
+            this.plotView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.plotView2.Location = new System.Drawing.Point(1110, 12);
+            this.plotView2.Name = "plotView2";
+            this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plotView2.Size = new System.Drawing.Size(60, 529);
+            this.plotView2.TabIndex = 1;
+            this.plotView2.Text = "plotView2";
+            this.plotView2.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plotView2.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plotView2.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
             // SpectrogramForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1082, 553);
+            this.ClientSize = new System.Drawing.Size(1182, 553);
+            this.Controls.Add(this.plotView2);
             this.Controls.Add(this.plotView1);
             this.Name = "SpectrogramForm";
             this.Text = "SpectrogramForm";
@@ -63,5 +79,6 @@ namespace ProjectISS
         #endregion
 
         private OxyPlot.WindowsForms.PlotView plotView1;
+        private OxyPlot.WindowsForms.PlotView plotView2;
     }
 }

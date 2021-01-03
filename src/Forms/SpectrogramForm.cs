@@ -14,7 +14,6 @@ namespace ProjectISS
             InitializeComponent();
 
             var model = new PlotModel { Title = $"DFT spektrum ({data.PlotTitle})" };
-
             model.Axes.Add(new LinearColorAxis
             {
                 Palette = OxyPalettes.Rainbow(128)
@@ -28,9 +27,9 @@ namespace ProjectISS
 
             for (int x = 0; x < topX; x++)
             {
-                for (int k = 0; k < N; k++)
+                for (int freq = 0; freq < topY; freq++)
                 {
-                    int freq = k * SharedFuncs.Fs / N / 2;
+                    int k = (int)(freq / ((double)SharedFuncs.Fs / N));
                     heatmapData[x, freq] = 10 * Math.Log10(Math.Pow(Complex.Abs(data.Frames[x].DFTCoeficients[k]), 2));
                 }
             }
@@ -60,6 +59,31 @@ namespace ProjectISS
             model.Axes.Add(y_axis);
             model.Series.Add(heatMapSeries);
             plotView1.Model = model;
+
+            var scaleModel = new PlotModel();
+            scaleModel.Axes.Add(new LinearColorAxis
+            {
+                Palette = OxyPalettes.Rainbow(128)
+            });
+
+            var scale = new double[2, 128];
+            for (int i = 0; i < 128; i++)
+            {
+                scale[0, i] = i - 64;
+                scale[1, i] = i - 64;
+            }
+
+            var scaleSeries = new HeatMapSeries
+            {
+                X0 = 0,
+                X1 = 1,
+                Y0 = -64,
+                Y1 = 64,
+                Data = scale
+            };
+
+            scaleModel.Series.Add(scaleSeries);
+            plotView2.Model = scaleModel;
         }
     }
 }
