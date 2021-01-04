@@ -8,7 +8,7 @@ namespace ProjectISS.Forms
 {
     public partial class FreqCharForm : Form
     {
-        public FreqCharForm(DataPoint[] freqCharPoints)
+        public FreqCharForm(DataPoint[] freqCharPoints, string title)
         {
             InitializeComponent();
 
@@ -28,7 +28,7 @@ namespace ProjectISS.Forms
                 IsZoomEnabled = false,
             };
 
-            var pm = new PlotModel { Title = "Frekvenční charakteristika" };
+            var pm = new PlotModel { Title = title };
             pm.Axes.Add(x_axis);
             pm.Axes.Add(y_axis);
 

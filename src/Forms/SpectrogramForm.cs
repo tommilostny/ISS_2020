@@ -9,14 +9,21 @@ namespace ProjectISS
 {
     public partial class SpectrogramForm : Form
     {
+        private const int paletteColors = 128;
+
         public SpectrogramForm(SamplesData data)
         {
             InitializeComponent();
+            RenderDFT(data);
+            RenderScale();
+        }
 
+        private void RenderDFT(SamplesData data)
+        {
             var model = new PlotModel { Title = $"DFT spektrum ({data.PlotTitle})" };
             model.Axes.Add(new LinearColorAxis
             {
-                Palette = OxyPalettes.Rainbow(128)
+                Palette = OxyPalettes.Rainbow(paletteColors)
             });
 
             int topX = data.Frames.Count;
@@ -59,26 +66,29 @@ namespace ProjectISS
             model.Axes.Add(y_axis);
             model.Series.Add(heatMapSeries);
             plotView1.Model = model;
+        }
 
+        private void RenderScale()
+        {
             var scaleModel = new PlotModel();
             scaleModel.Axes.Add(new LinearColorAxis
             {
-                Palette = OxyPalettes.Rainbow(128)
+                Palette = OxyPalettes.Rainbow(paletteColors)
             });
 
-            var scale = new double[2, 128];
-            for (int i = 0; i < 128; i++)
+            var scale = new double[2, paletteColors];
+            for (int i = 0; i < paletteColors; i++)
             {
-                scale[0, i] = i - 64;
-                scale[1, i] = i - 64;
+                scale[0, i] = i - paletteColors / 2;
+                scale[1, i] = i - paletteColors / 2;
             }
 
             var scaleSeries = new HeatMapSeries
             {
                 X0 = 0,
                 X1 = 1,
-                Y0 = -64,
-                Y1 = 64,
+                Y0 = -(paletteColors / 2),
+                Y1 = paletteColors / 2,
                 Data = scale
             };
 

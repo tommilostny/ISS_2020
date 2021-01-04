@@ -60,6 +60,9 @@ namespace ProjectISS
             this.buttonFramesOff = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.plotsSplitContainer)).BeginInit();
             this.plotsSplitContainer.Panel1.SuspendLayout();
             this.plotsSplitContainer.Panel2.SuspendLayout();
@@ -70,6 +73,7 @@ namespace ProjectISS
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTrackBar)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -77,7 +81,9 @@ namespace ProjectISS
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "maskoff_tone",
-            "maskon_tone"});
+            "maskon_tone",
+            "maskoff_sentence",
+            "maskon_sentence"});
             this.comboBox1.Location = new System.Drawing.Point(12, 42);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(179, 28);
@@ -117,7 +123,7 @@ namespace ProjectISS
             this.plotViewMaskOffTone.Location = new System.Drawing.Point(3, 3);
             this.plotViewMaskOffTone.Name = "plotViewMaskOffTone";
             this.plotViewMaskOffTone.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewMaskOffTone.Size = new System.Drawing.Size(823, 314);
+            this.plotViewMaskOffTone.Size = new System.Drawing.Size(823, 334);
             this.plotViewMaskOffTone.TabIndex = 5;
             this.plotViewMaskOffTone.Text = "plotViewMaskOffTone";
             this.plotViewMaskOffTone.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -133,7 +139,7 @@ namespace ProjectISS
             this.plotViewMaskOnTone.Location = new System.Drawing.Point(3, 3);
             this.plotViewMaskOnTone.Name = "plotViewMaskOnTone";
             this.plotViewMaskOnTone.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewMaskOnTone.Size = new System.Drawing.Size(823, 322);
+            this.plotViewMaskOnTone.Size = new System.Drawing.Size(823, 343);
             this.plotViewMaskOnTone.TabIndex = 6;
             this.plotViewMaskOnTone.Text = "plotView1";
             this.plotViewMaskOnTone.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -163,8 +169,8 @@ namespace ProjectISS
             // plotsSplitContainer.Panel2
             // 
             this.plotsSplitContainer.Panel2.Controls.Add(this.plotViewMaskOnTone);
-            this.plotsSplitContainer.Size = new System.Drawing.Size(829, 653);
-            this.plotsSplitContainer.SplitterDistance = 320;
+            this.plotsSplitContainer.Size = new System.Drawing.Size(829, 694);
+            this.plotsSplitContainer.SplitterDistance = 340;
             this.plotsSplitContainer.TabIndex = 8;
             // 
             // label6
@@ -192,8 +198,8 @@ namespace ProjectISS
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.plotView2);
-            this.splitContainer2.Size = new System.Drawing.Size(829, 640);
-            this.splitContainer2.SplitterDistance = 314;
+            this.splitContainer2.Size = new System.Drawing.Size(829, 660);
+            this.splitContainer2.SplitterDistance = 323;
             this.splitContainer2.TabIndex = 8;
             // 
             // plotView1
@@ -205,7 +211,7 @@ namespace ProjectISS
             this.plotView1.Location = new System.Drawing.Point(3, 3);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(823, 308);
+            this.plotView1.Size = new System.Drawing.Size(823, 317);
             this.plotView1.TabIndex = 5;
             this.plotView1.Text = "plotViewMaskOffTone";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -221,7 +227,7 @@ namespace ProjectISS
             this.plotView2.Location = new System.Drawing.Point(3, 3);
             this.plotView2.Name = "plotView2";
             this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView2.Size = new System.Drawing.Size(823, 315);
+            this.plotView2.Size = new System.Drawing.Size(823, 326);
             this.plotView2.TabIndex = 6;
             this.plotView2.Text = "plotView1";
             this.plotView2.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -286,7 +292,7 @@ namespace ProjectISS
             this.minTrackBar.Maximum = 99;
             this.minTrackBar.Name = "minTrackBar";
             this.minTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.minTrackBar.Size = new System.Drawing.Size(56, 418);
+            this.minTrackBar.Size = new System.Drawing.Size(56, 459);
             this.minTrackBar.SmallChange = 5;
             this.minTrackBar.TabIndex = 7;
             this.minTrackBar.ValueChanged += new System.EventHandler(this.MinTrackBar_ValueChanged);
@@ -321,7 +327,7 @@ namespace ProjectISS
             this.maxTrackBar.Minimum = 1;
             this.maxTrackBar.Name = "maxTrackBar";
             this.maxTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.maxTrackBar.Size = new System.Drawing.Size(56, 418);
+            this.maxTrackBar.Size = new System.Drawing.Size(56, 459);
             this.maxTrackBar.SmallChange = 5;
             this.maxTrackBar.TabIndex = 10;
             this.maxTrackBar.Value = 100;
@@ -385,7 +391,7 @@ namespace ProjectISS
             // 
             // buttonFramesOff
             // 
-            this.buttonFramesOff.Location = new System.Drawing.Point(106, 498);
+            this.buttonFramesOff.Location = new System.Drawing.Point(106, 442);
             this.buttonFramesOff.Name = "buttonFramesOff";
             this.buttonFramesOff.Size = new System.Drawing.Size(129, 29);
             this.buttonFramesOff.TabIndex = 17;
@@ -395,7 +401,7 @@ namespace ProjectISS
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(106, 533);
+            this.button9.Location = new System.Drawing.Point(106, 477);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(129, 29);
             this.button9.TabIndex = 18;
@@ -405,19 +411,55 @@ namespace ProjectISS
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(106, 588);
+            this.button10.Location = new System.Drawing.Point(106, 532);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(129, 29);
+            this.button10.Size = new System.Drawing.Size(129, 39);
             this.button10.TabIndex = 19;
             this.button10.Text = "DFT";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.ButtonDFT_Click);
             // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(12, 34);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(62, 24);
+            this.radioButton1.TabIndex = 20;
+            this.radioButton1.Text = "Tone";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButtonTone_CheckedChanged);
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(12, 64);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(90, 24);
+            this.radioButton2.TabIndex = 21;
+            this.radioButton2.Text = "Sentence";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.RadioButtonSentence_CheckedChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Controls.Add(this.radioButton2);
+            this.groupBox1.Location = new System.Drawing.Point(101, 597);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(134, 98);
+            this.groupBox1.TabIndex = 22;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Files for analysis:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1082, 677);
+            this.BackColor = System.Drawing.SystemColors.Window;
+            this.ClientSize = new System.Drawing.Size(1082, 718);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.buttonFramesOff);
@@ -451,6 +493,8 @@ namespace ProjectISS
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.minTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTrackBar)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -486,6 +530,9 @@ namespace ProjectISS
         private Button buttonFramesOff;
         private Button button9;
         private Button button10;
+        private RadioButton radioButton1;
+        private RadioButton radioButton2;
+        private GroupBox groupBox1;
     }
 }
 

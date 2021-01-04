@@ -59,7 +59,7 @@ namespace ProjectISS
             });
         }
 
-        public static async void MeanNormalize(SamplesData x1, SamplesData x2)
+        public static async Task MeanNormalize(SamplesData x1, SamplesData x2)
         {
             var task1 = MeanNormalize(x1.DataPoints);
             var task2 = MeanNormalize(x2.DataPoints);
@@ -75,6 +75,7 @@ namespace ProjectISS
             {
                 //vzorec pro výpočet velikosti rámce ve vzorcích
                 int frameLength = (int)(frameLengthMs / 1000 * Fs);
+                x.Frames = new List<Frame>();
 
                 for (int i = 0; i < x.DataPoints.Length - frameLength / 2; i += frameLength / 2)
                 {
@@ -83,7 +84,7 @@ namespace ProjectISS
             });
         }
 
-        public static async void LoadFrames(SamplesData x1, SamplesData x2, int frameLengthMs)
+        public static async Task LoadFrames(SamplesData x1, SamplesData x2, int frameLengthMs = 20)
         {
             var task1 = LoadFrames(x1, frameLengthMs);
             var task2 = LoadFrames(x2, frameLengthMs);
@@ -263,6 +264,24 @@ namespace ProjectISS
                     b.Add(Complex.Abs(y.Frames[i].DFTCoeficients[k]));
                 }
                 result[k] = new(k, b.Average() / (1 + a.Average()));
+            }
+            return result;
+        }
+
+        public static DataPoint[] IDFT (DataPoint[] freqCharPoints, int N = 1024)
+        {
+            var result = new DataPoint[N / 2];
+            for (int n = 0; n < N / 2; n++)
+            {
+                var reals = new List<double>();
+                var imags = new List<double>();
+                for (int k = 0; k < N / 2; k++)
+                {
+                    double arg = 2 * Math.PI * n * k / N;
+                    reals.Add(freqCharPoints[k].Y * Math.Cos(arg));
+                    imags.Add(freqCharPoints[k].Y * Math.Sin(arg));
+                }
+                result[n] = new(n, Complex.Abs(new Complex(reals.Sum(), imags.Sum())) / N);
             }
             return result;
         }

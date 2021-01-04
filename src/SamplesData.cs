@@ -27,10 +27,10 @@ namespace ProjectISS
 
         public bool IsNormalized { get; set; } = false;
 
-        public List<Frame> Frames { get; } = new List<Frame>();
+        public List<Frame> Frames { get; set; }
 
-        public DataPoint[] F0Points { get; set; }
+        public DataPoint[] F0Points { get; set; } = null;
 
-        public DataPoint[] FreqCharPoints { get; set; }
+        public DataPoint[] FreqCharPoints { get; set; } = null;
     }
 }

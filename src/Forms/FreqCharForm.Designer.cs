@@ -40,7 +40,7 @@ namespace ProjectISS.Forms
             this.plotView1.Location = new System.Drawing.Point(12, 12);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(983, 410);
+            this.plotView1.Size = new System.Drawing.Size(1108, 429);
             this.plotView1.TabIndex = 0;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -52,10 +52,9 @@ namespace ProjectISS.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1007, 434);
+            this.ClientSize = new System.Drawing.Size(1132, 453);
             this.Controls.Add(this.plotView1);
             this.Name = "FreqCharForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FreqCharForm";
             this.ResumeLayout(false);
 
